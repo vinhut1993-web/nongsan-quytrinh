@@ -1,3 +1,1173 @@
+<<<<<<< HEAD
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+<title>Báo Giá Nông Sản</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: tài liệu kỹ thuật — mục lục dính bên trái (desktop), nội dung một cột; bảng & code cuộn ngang riêng */
+:root{
+  --bg:#f6f7f4; --surface:#ffffff; --sunk:#eef1ec; --fg:#1d241f; --muted:#5d6a61; --line:#d9dfd8;
+  --accent:#2f6b3f; --accent-soft:#e2efe4; --warn:#9a5b00; --warn-soft:#fbf0dc; --bad:#a3322a; --bad-soft:#f8e3e0;
+  --info:#285a8c; --info-soft:#e3edf7; --code-bg:#f1f3ef;
+  --f-body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141814; --surface:#1b201c; --sunk:#222823; --fg:#e4e9e3; --muted:#9aa79d; --line:#323a33;
+  --accent:#7fc08f; --accent-soft:#213528; --warn:#e3a94f; --warn-soft:#3a2d17; --bad:#ef8a80; --bad-soft:#3b211e;
+  --info:#8bb8e6; --info-soft:#1d2a38; --code-bg:#1f2520; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141814; --surface:#1b201c; --sunk:#222823; --fg:#e4e9e3; --muted:#9aa79d; --line:#323a33;
+  --accent:#7fc08f; --accent-soft:#213528; --warn:#e3a94f; --warn-soft:#3a2d17; --bad:#ef8a80; --bad-soft:#3b211e;
+  --info:#8bb8e6; --info-soft:#1d2a38; --code-bg:#1f2520; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)} nav.toc{position:static!important;max-height:none!important}}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);align-self:start;max-height:calc(100vh - 40px);overflow:auto;font-size:13.5px}
+nav.toc .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:600}
+nav.toc ol{margin:0;padding-left:26px;display:grid;gap:4px}
+nav.toc a{color:var(--fg);text-decoration:none}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent);text-decoration:underline}
+main{min-width:0}
+header.hero{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:8px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-size:30px;line-height:1.2;margin:6px 0 10px;text-wrap:balance;font-weight:700}
+h2{font-size:22px;margin:48px 0 12px;padding-top:8px;text-wrap:balance;font-weight:700;scroll-margin-top:16px}
+h2 .no{color:var(--accent);font-family:var(--f-mono);font-size:16px;margin-right:8px}
+h3{font-size:17px;margin:28px 0 6px}
+h3.grp{margin-top:32px;padding-top:12px;border-top:1px solid var(--line)}
+p{margin:8px 0;max-width:72ch}
+.muted{color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--muted)}
+.meta b{color:var(--fg);font-weight:600}
+code,pre,.ty,.n{font-family:var(--f-mono)}
+code{overflow-wrap:anywhere;font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--sunk);font-weight:600;font-size:12px;letter-spacing:.03em;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td.ty{font-size:12px;color:var(--muted);white-space:nowrap}
+td.c{text-align:center;color:var(--accent);font-weight:700}
+table.wide,table.wide2{min-width:1000px} table.wide td:first-child{min-width:220px}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:13px}
+table.cols td:first-child{white-space:nowrap} table.cols td:last-child{min-width:240px}
+tr.best td{background:var(--accent-soft)}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:10.5px;padding:1px 6px;border-radius:4px;margin-right:4px;white-space:nowrap;border:1px solid transparent}
+.tag.pk{background:var(--sunk);border-color:var(--line)}
+.tag.fk{background:var(--info-soft);color:var(--info)}
+.tag.gen{background:var(--accent-soft);color:var(--accent)}
+.tag.calc{background:var(--warn-soft);color:var(--warn)}
+details.tbl{margin:12px 0;border-radius:8px}
+details.tbl>summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;padding:6px 0;list-style:none}
+details.tbl>summary::-webkit-details-marker{display:none}
+details.tbl>summary::before{content:"▸";color:var(--muted);font-size:12px;transition:transform .15s}
+details.tbl[open]>summary::before{transform:rotate(90deg)}
+details.tbl>summary span{color:var(--muted);font-size:14px;flex:1 1 300px}
+code.tn{font-size:15px;font-weight:600;background:none;padding:0;color:var(--fg)}
+.formula{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:4px 0;margin:12px 0}
+.formula .row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr) minmax(0,1fr);gap:12px;padding:9px 14px;border-bottom:1px solid var(--line);align-items:baseline}
+.formula .row:last-child{border-bottom:0}
+.formula .row.h{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.formula .k{font-family:var(--f-mono);font-size:13px;font-weight:600}
+.formula .k small{display:block;font-family:var(--f-body);font-weight:400;color:var(--muted);font-size:12px}
+.formula .eq{font-family:var(--f-mono);font-size:13px;overflow-wrap:anywhere;min-width:0}
+.formula .ex{font-size:13.5px;text-align:right;font-variant-numeric:tabular-nums}
+.formula .row.total{background:var(--accent-soft)}
+@media (max-width:640px){.formula .row{grid-template-columns:minmax(0,1fr)} .formula .ex{text-align:left} .formula .row.h{display:none}}
+.note{border-left:3px solid var(--info);background:var(--info-soft);padding:10px 14px;border-radius:0 6px 6px 0;margin:12px 0;max-width:80ch}
+.note.warn{border-color:var(--warn);background:var(--warn-soft)}
+.issues{display:grid;gap:10px;margin:12px 0}
+.issue{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px}
+.sev{font-size:11px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:999px;align-self:start;white-space:nowrap}
+.sev.high{background:var(--bad-soft);color:var(--bad)}
+.sev.mid{background:var(--warn-soft);color:var(--warn)}
+.sev.low{background:var(--sunk);color:var(--muted)}
+.issue b{font-weight:600;min-width:0;overflow-wrap:anywhere}
+.issue .fix{grid-column:2;color:var(--muted);font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:14px 0;padding:0;list-style:none;counter-reset:s}
+.steps li{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;counter-increment:s;font-size:14px}
+.steps li::before{content:counter(s);display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--bg);font-size:12px;font-weight:700;margin-bottom:6px}
+.steps li b{display:block}
+.steps li small{color:var(--muted);display:block;overflow-wrap:anywhere;margin-top:4px;font-family:var(--f-mono);font-size:11.5px}
+.phase{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+figure.dg{margin:14px 0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.dg-scroll{overflow-x:auto}
+figure.dg svg{display:block;width:100%;min-width:760px;height:auto;font-family:var(--f-body)}
+figure.dg figcaption{font-size:13.5px;color:var(--muted);margin-top:10px;max-width:90ch}
+.dg-box{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.dg-key{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2}
+.dg-res{fill:var(--sunk);stroke:var(--accent);stroke-width:1.5}
+.dg-shared{fill:var(--bg);stroke:var(--muted);stroke-dasharray:5 4}
+.dg-t{fill:var(--fg);font-size:14px;font-weight:700}
+.dg-c{fill:var(--info);font-family:var(--f-mono);font-size:10.5px}
+.dg-d{fill:var(--muted);font-size:12px}
+.dg-lane{fill:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em}
+.dg-ln line{stroke:var(--muted);stroke-width:1.5}
+.dg-ln-acc line{stroke:var(--accent);stroke-width:2}
+.dg-dash{stroke-dasharray:6 4}
+.dg-ahp{fill:var(--muted)} .dg-ahp-acc{fill:var(--accent)}
+.dg-lab text{fill:var(--fg);font-size:11.5px;text-anchor:middle}
+.dg-lab text.dg-m{fill:var(--muted);font-size:10.5px}
+.dg-lab text[text-anchor="start"]{text-anchor:start}
+.dg-lab-acc text{fill:var(--accent);font-size:11.5px;font-weight:600}
+pre.mermaid{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto}
+.codebox{position:relative;margin:12px 0}
+.codebox pre{background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:14px;overflow:auto;max-height:520px;font-size:12.5px;line-height:1.55;margin:0;white-space:pre}
+.codebox .bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.codebox .bar span{font-family:var(--f-mono);font-size:12.5px;font-weight:600}
+button.copy{font:inherit;font-size:12.5px;padding:5px 12px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+button.copy:hover{border-color:var(--accent);color:var(--accent)}
+button.copy:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.api td:first-child{white-space:nowrap}
+.m{font-family:var(--f-mono);font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;margin-right:6px}
+.m.get{background:var(--info-soft);color:var(--info)} .m.post{background:var(--accent-soft);color:var(--accent)}
+.m.put,.m.patch{background:var(--warn-soft);color:var(--warn)} .m.del{background:var(--bad-soft);color:var(--bad)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted);margin:8px 0}
+ul.rules{padding-left:20px;max-width:80ch} ul.rules li{margin:6px 0}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Mục lục">
+  <div class="lbl">Mục lục</div>
+  <ol>
+    <li><a href="#tong-quan">Tổng quan &amp; quy ước</a></li>
+    <li><a href="#quy-trinh">Quy trình nghiệp vụ</a></li>
+    <li><a href="#erd">Sơ đồ quan hệ</a></li>
+    <li><a href="#bang">Danh sách bảng &amp; cột</a></li>
+    <li><a href="#cong-thuc">Công thức &amp; so sánh</a></li>
+    <li><a href="#mapping">HTML → Database</a></li>
+    <li><a href="#quy-tac">Quy tắc nghiệp vụ</a></li>
+    <li><a href="#api">API backend</a></li>
+    <li><a href="#ai">Hướng dẫn cho AI</a></li>
+    <li><a href="#sql">SQL đầy đủ</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">backend · v1.1</div>
+  <h1>Hệ thống báo giá nông sản nhập khẩu — Giai đoạn 1</h1>
+  <p>Tài liệu này mô tả database và backend cho quy trình: <b>khách gửi yêu cầu</b> (mặt hàng, cảng đến, quy cách, số lượng) → công ty lấy báo giá từ nhiều nhà cung cấp nước ngoài → tính giá vốn, phụ phí, VAT theo đúng số lượng khách cần → so sánh tổng sau VAT, chọn NCC tối ưu → gửi giá cho khách. Tài liệu chỉ gồm <b>giai đoạn 1</b>; đơn hàng, PO, thanh toán làm ở giai đoạn sau. Trong tài liệu có: những bảng nào, mỗi bảng có cột gì, công thức tính ra sao.</p>
+  <div class="meta">
+    <span>Database: <b>PostgreSQL 15+</b></span>
+    <span>Số bảng: <b>16</b> + 3 view + 3 hàm</span>
+    
+  </div>
+</header>
+
+<section id="tong-quan">
+<h2><span class="no">1</span>Tổng quan &amp; quy ước</h2>
+<p>Phạm vi giai đoạn 1 bắt đầu từ lúc khách gửi yêu cầu và kết thúc khi công ty chọn được NCC tối ưu và gửi giá cho khách.</p>
+<div class="tw"><table>
+<thead><tr><th>Nhóm</th><th>Làm gì</th><th>Bảng</th></tr></thead>
+<tbody>
+<tr><td><b>Danh mục</b></td><td>Cảng, loại phí &amp; định mức phí (phí cố định và LCC theo cảng), NCC, sản phẩm, tỷ giá, người dùng</td><td><code>ports</code> <code>fee_types</code> <code>fee_rates</code> <code>suppliers</code> <code>products</code> <code>exchange_rates</code> <code>users</code></td></tr>
+<tr><td><b>Yêu cầu của khách</b></td><td>Khách cần mặt hàng gì, về cảng nào, quy cách bao, số lượng bao nhiêu</td><td><code>customers</code> <code>customer_requests</code> <code>customer_request_items</code></td></tr>
+<tr><td><b>Báo giá NCC</b></td><td>Nhiều NCC chào giá USD/kg cho từng dòng yêu cầu; hệ thống chụp phí, tính giá vốn, thành tiền, VAT</td><td><code>supplier_quotations</code> <code>supplier_quotation_items</code> <code>supplier_quotation_item_fees</code></td></tr>
+<tr><td><b>So sánh &amp; gửi khách</b></td><td>Tính tổng sau VAT theo số lượng khách cần, xếp hạng, chọn NCC tối ưu, xuất giá gửi khách</td><td>view <code>v_request_quote_comparison</code> · <code>v_request_customer_quote</code></td></tr>
+</tbody></table></div>
+
+<h3>Quy ước đơn vị (bắt buộc thống nhất)</h3>
+<div class="tw"><table>
+<thead><tr><th>Đại lượng</th><th>Đơn vị lưu trong DB</th><th>Hậu tố tên cột</th><th>Ví dụ</th></tr></thead>
+<tbody>
+<tr><td>Đơn giá NCC</td><td>USD / KG</td><td><code>_usd_per_kg</code></td><td>0.3648</td></tr>
+<tr><td>Phụ phí, giá vốn, giá bán</td><td>VNĐ / TẤN (đồng đầy đủ, không phải nghìn đồng)</td><td><code>_vnd_per_ton</code></td><td>500000</td></tr>
+<tr><td>Khối lượng</td><td>KG</td><td><code>_kg</code></td><td>60000</td></tr>
+<tr><td>Thành tiền</td><td>VNĐ, làm tròn đến đồng</td><td><code>amount_*</code>, <code>total_*</code></td><td>687885408</td></tr>
+<tr><td>Tỷ lệ (VAT, cọc, lãi %)</td><td>Số thập phân</td><td><code>_rate</code>, <code>_pct</code></td><td>0.05 = 5%</td></tr>
+</tbody></table></div>
+<div class="note warn">File chuẩn.</div>
+</section>
+
+<section id="quy-trinh">
+<h2><span class="no">2</span>Quy trình nghiệp vụ</h2>
+<ol class="steps">
+  <li><b>Nhận yêu cầu khách</b>Mặt hàng, cảng đến, quy cách bao, số lượng<small>customer_requests · customer_request_items</small></li>
+  <li><b>Lấy báo giá NCC</b>Mỗi NCC chào đơn giá USD/kg cho từng dòng yêu cầu, kèm tỷ giá<small>supplier_quotations · _items.request_item_id</small></li>
+  <li><b>Tra phí theo cảng</b>LCC theo cảng đến + phí cố định: logistics, bán hàng, ops, chuyển tiền, chứng từ<small>fee_rates · _item_fees</small></li>
+  <li><b>Tính giá</b>Giá vốn, thành tiền/tấn, tổng tiền, VAT, tổng sau VAT theo số lượng khách cần<small>fn_recalc_supplier_item</small></li>
+  <li><b>So sánh &amp; chọn NCC</b>Xếp hạng tổng sau VAT trong từng dòng yêu cầu; chưa đạt thì đàm phán lại (về bước 2)<small>v_request_quote_comparison</small></li>
+  <li><b>Gửi giá cho khách</b>Giá của NCC đã chọn, theo số lượng khách cần<small>selected_supplier_item_id · v_request_customer_quote</small></li>
+</ol>
+</section>
+
+<section id="erd">
+<h2><span class="no">3</span>Sơ đồ quan hệ</h2>
+<p>Đọc từ trái sang phải theo thứ tự công việc. Mỗi ô là một bảng: tên tiếng Việt, tên bảng trong database và các thông tin chính. Mũi tên “1 → nhiều” nghĩa là một dòng bên trái có nhiều dòng bên phải. Ví dụ: một khách gửi nhiều yêu cầu.</p>
+<figure class="dg">
+<div class="dg-scroll">
+<svg viewBox="0 0 1080 540" role="img" aria-label="Sơ đồ bảng giai đoạn 1: khách hàng gửi yêu cầu gồm nhiều dòng; nhiều nhà cung cấp chào giá cho mỗi dòng yêu cầu; phí được chép vào từng dòng giá; hệ thống so sánh, chọn nhà cung cấp tối ưu và ra giá gửi khách.">
+  <defs>
+    <marker id="dg-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-ahp" d="M0,0 L10,5 L0,10 z"></path></marker>
+    <marker id="dg-ah-acc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-ahp-acc" d="M0,0 L10,5 L0,10 z"></path></marker>
+  </defs>
+
+  <!-- nhãn hàng -->
+  <text class="dg-lane" x="20" y="46">① KHÁCH HÀNG</text>
+  <text class="dg-lane" x="20" y="226">② NHÀ CUNG CẤP</text>
+  <text class="dg-lane" x="20" y="406">③ PHÍ</text>
+  <text class="dg-lane" x="860" y="46">④ KẾT QUẢ</text>
+
+  <!-- HÀNG 1: KHÁCH -->
+  <rect class="dg-box" x="20" y="56" width="200" height="104" rx="8"></rect>
+  <text class="dg-t" x="36" y="84">Khách hàng</text>
+  <text class="dg-c" x="36" y="103">customers</text>
+  <text class="dg-d" x="36" y="128">Tên, mã số thuế, liên hệ</text>
+
+  <rect class="dg-box" x="300" y="56" width="200" height="104" rx="8"></rect>
+  <text class="dg-t" x="316" y="84">Yêu cầu báo giá</text>
+  <text class="dg-c" x="316" y="103">customer_requests</text>
+  <text class="dg-d" x="316" y="128">Số YC, ngày, hạn gửi giá</text>
+
+  <rect class="dg-box dg-key" x="580" y="56" width="200" height="104" rx="8"></rect>
+  <text class="dg-t" x="596" y="84">Dòng yêu cầu</text>
+  <text class="dg-c" x="596" y="103">customer_request_items</text>
+  <text class="dg-d" x="596" y="128">Mặt hàng · cảng đến</text>
+  <text class="dg-d" x="596" y="146">quy cách bao · số lượng</text>
+
+  <rect class="dg-box dg-res" x="860" y="56" width="200" height="104" rx="8"></rect>
+  <text class="dg-t" x="876" y="84">Giá gửi khách</text>
+  <text class="dg-c" x="876" y="103">v_request_customer_quote</text>
+  <text class="dg-d" x="876" y="128">Giá NCC đã chọn ×</text>
+  <text class="dg-d" x="876" y="146">số lượng khách cần</text>
+
+  <!-- HÀNG 2: NCC -->
+  <rect class="dg-box" x="20" y="236" width="200" height="104" rx="8"></rect>
+  <text class="dg-t" x="36" y="264">Nhà cung cấp</text>
+  <text class="dg-c" x="36" y="283">suppliers</text>
+  <text class="dg-d" x="36" y="308">Thiên Tân, AKP, Sivaram…</text>
+
+  <rect class="dg-box" x="300" y="236" width="200" height="104" rx="8"></rect>
+  <text class="dg-t" x="316" y="264">Phiếu báo giá NCC</text>
+  <text class="dg-c" x="316" y="283">supplier_quotations</text>
+  <text class="dg-d" x="316" y="308">Ngày, cảng đến, tỷ giá</text>
+
+  <rect class="dg-box dg-key" x="580" y="236" width="200" height="104" rx="8"></rect>
+  <text class="dg-t" x="596" y="264">Dòng giá NCC</text>
+  <text class="dg-c" x="596" y="283">supplier_quotation_items</text>
+  <text class="dg-d" x="596" y="308">USD/kg · kg/bao · số bao</text>
+  <text class="dg-d" x="596" y="326">→ giá vốn, thành tiền/tấn</text>
+
+  <rect class="dg-box dg-res" x="860" y="236" width="200" height="104" rx="8"></rect>
+  <text class="dg-t" x="876" y="264">So sánh NCC</text>
+  <text class="dg-c" x="876" y="283">v_request_quote_comparison</text>
+  <text class="dg-d" x="876" y="308">Tổng sau VAT theo</text>
+  <text class="dg-d" x="876" y="326">số lượng khách cần</text>
+
+  <!-- HÀNG 3: PHÍ -->
+  <rect class="dg-box" x="20" y="416" width="200" height="104" rx="8"></rect>
+  <text class="dg-t" x="36" y="444">Loại phí</text>
+  <text class="dg-c" x="36" y="463">fee_types</text>
+  <text class="dg-d" x="36" y="488">LCC, logistics, bán hàng,</text>
+  <text class="dg-d" x="36" y="506">ops, chuyển tiền, chứng từ</text>
+
+  <rect class="dg-box" x="300" y="416" width="200" height="104" rx="8"></rect>
+  <text class="dg-t" x="316" y="444">Định mức phí</text>
+  <text class="dg-c" x="316" y="463">fee_rates</text>
+  <text class="dg-d" x="316" y="488">VNĐ/tấn · LCC theo cảng</text>
+  <text class="dg-d" x="316" y="506">có ngày hiệu lực</text>
+
+  <rect class="dg-box" x="580" y="416" width="200" height="104" rx="8"></rect>
+  <text class="dg-t" x="596" y="444">Phí của dòng giá</text>
+  <text class="dg-c" x="596" y="463">supplier_quotation_item_fees</text>
+  <text class="dg-d" x="596" y="488">Bản chụp định mức</text>
+  <text class="dg-d" x="596" y="506">lúc nhập báo giá</text>
+
+  <rect class="dg-box dg-shared" x="860" y="416" width="200" height="104" rx="8"></rect>
+  <text class="dg-t" x="876" y="444">Danh mục dùng chung</text>
+  <text class="dg-c" x="876" y="463">products · ports</text>
+  <text class="dg-c" x="876" y="478">exchange_rates</text>
+  <text class="dg-d" x="876" y="498">Mặt hàng, cảng, tỷ giá:</text>
+  <text class="dg-d" x="876" y="514">các bảng khác chọn từ đây</text>
+
+  <!-- mũi tên ngang: 1 → nhiều -->
+  <g class="dg-ln">
+    <line x1="220" y1="108" x2="298" y2="108" marker-end="url(#dg-ah)"></line>
+    <line x1="500" y1="108" x2="578" y2="108" marker-end="url(#dg-ah)"></line>
+    <line x1="220" y1="288" x2="298" y2="288" marker-end="url(#dg-ah)"></line>
+    <line x1="500" y1="288" x2="578" y2="288" marker-end="url(#dg-ah)"></line>
+    <line x1="220" y1="468" x2="298" y2="468" marker-end="url(#dg-ah)"></line>
+    <line x1="500" y1="468" x2="578" y2="468" marker-end="url(#dg-ah)"></line>
+  </g>
+  <g class="dg-lab">
+    <text x="260" y="100">gửi</text><text class="dg-m" x="260" y="124">1 → nhiều</text>
+    <text x="540" y="100">gồm</text><text class="dg-m" x="540" y="124">1 → nhiều</text>
+    <text x="260" y="280">gửi</text><text class="dg-m" x="260" y="304">1 → nhiều</text>
+    <text x="540" y="280">gồm</text><text class="dg-m" x="540" y="304">1 → nhiều</text>
+    <text x="260" y="460">có</text><text class="dg-m" x="260" y="484">1 → nhiều</text>
+    <text x="540" y="460">chép vào</text><text class="dg-m" x="540" y="484">khi nhập giá</text>
+  </g>
+
+  <!-- liên kết chính giữa yêu cầu và giá NCC -->
+  <g class="dg-ln-acc">
+    <line x1="630" y1="160" x2="630" y2="234" marker-end="url(#dg-ah-acc)"></line>
+    <line class="dg-dash" x1="730" y1="236" x2="730" y2="162" marker-end="url(#dg-ah-acc)"></line>
+    <line x1="780" y1="288" x2="858" y2="288" marker-end="url(#dg-ah-acc)"></line>
+    <line x1="960" y1="236" x2="960" y2="162" marker-end="url(#dg-ah-acc)"></line>
+  </g>
+  <g class="dg-lab-acc">
+    <text x="622" y="194" text-anchor="end">nhiều NCC</text>
+    <text x="622" y="210" text-anchor="end">chào giá cho dòng</text>
+    <text x="738" y="194" text-anchor="start">NCC được</text>
+    <text x="738" y="210" text-anchor="start">chọn</text>
+    <text x="820" y="280" text-anchor="middle">xếp hạng</text>
+    <text x="968" y="194" text-anchor="start">NCC</text>
+    <text x="968" y="210" text-anchor="start">tối ưu</text>
+  </g>
+
+  <!-- phí cộng vào giá -->
+  <g class="dg-ln">
+    <line x1="680" y1="416" x2="680" y2="342" marker-end="url(#dg-ah)"></line>
+  </g>
+  <g class="dg-lab">
+    <text x="688" y="374" text-anchor="start">cộng vào</text>
+    <text x="688" y="390" text-anchor="start">giá/tấn</text>
+  </g>
+</svg>
+</div>
+<figcaption>Hai ô viền màu ở giữa là trung tâm của giai đoạn 1: mỗi <b>dòng yêu cầu</b> của khách nhận giá từ nhiều <b>dòng giá NCC</b>. Phí được chép vào từng dòng giá rồi cộng vào giá/tấn. Hệ thống so sánh tổng sau VAT, chọn NCC tối ưu (mũi tên nét đứt ghi lại NCC được chọn) và ra giá gửi khách.</figcaption>
+</figure>
+
+<h3>Cột nào nối với bảng nào</h3>
+<p class="muted">Dành cho người code và AI: mỗi dòng là một khóa ngoại trong database.</p>
+<div class="tw"><table>
+<thead><tr><th>Bảng</th><th>Cột liên kết</th><th>Trỏ tới bảng</th><th>Nghĩa là</th></tr></thead>
+<tbody>
+<tr><td><code>customer_requests</code></td><td><code>customer_id</code></td><td><code>customers</code></td><td>Một khách gửi nhiều yêu cầu</td></tr>
+<tr><td><code>customer_request_items</code></td><td><code>request_id</code></td><td><code>customer_requests</code></td><td>Một yêu cầu gồm nhiều dòng</td></tr>
+<tr><td><code>customer_request_items</code></td><td><code>product_id</code>, <code>port_id</code></td><td><code>products</code>, <code>ports</code></td><td>Mặt hàng và cảng đến khách cần</td></tr>
+<tr><td><code>customer_request_items</code></td><td><code>selected_supplier_item_id</code></td><td><code>supplier_quotation_items</code></td><td>NCC được chọn cho dòng này</td></tr>
+<tr><td><code>supplier_quotations</code></td><td><code>supplier_id</code>, <code>port_id</code></td><td><code>suppliers</code>, <code>ports</code></td><td>Một NCC gửi nhiều phiếu; phiếu báo giá về một cảng</td></tr>
+<tr><td><code>supplier_quotation_items</code></td><td><code>quotation_id</code></td><td><code>supplier_quotations</code></td><td>Một phiếu gồm nhiều dòng giá</td></tr>
+<tr><td><code>supplier_quotation_items</code></td><td><code>request_item_id</code></td><td><code>customer_request_items</code></td><td>Dòng giá này chào cho dòng yêu cầu nào (một dòng yêu cầu nhận giá từ nhiều NCC)</td></tr>
+<tr><td><code>supplier_quotation_items</code></td><td><code>product_id</code></td><td><code>products</code></td><td>Mặt hàng NCC chào</td></tr>
+<tr><td><code>supplier_quotation_item_fees</code></td><td><code>item_id</code>, <code>fee_type_id</code></td><td><code>supplier_quotation_items</code>, <code>fee_types</code></td><td>Mỗi dòng giá có một bản chụp cho từng loại phí</td></tr>
+<tr><td><code>fee_rates</code></td><td><code>fee_type_id</code>, <code>port_id</code></td><td><code>fee_types</code>, <code>ports</code></td><td>Định mức của từng loại phí; <code>port_id</code> trống = áp dụng mọi cảng</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="bang">
+<h2><span class="no">4</span>Danh sách bảng &amp; cột</h2>
+<div class="legend">
+  <span><span class="tag pk">PK</span> khóa chính</span>
+  <span><span class="tag fk">FK → bảng</span> khóa ngoại</span>
+  <span><span class="tag gen">DB tự tính</span> cột GENERATED, không ghi</span>
+  <span><span class="tag calc">Backend tính</span> backend ghi, frontend không gửi</span>
+</div>
+<h3 class='grp'>Danh mục</h3><p class='muted'>Dữ liệu nền, ít thay đổi. Sửa ở màn hình Danh mục.</p>
+<details class='tbl' id='t-users' open><summary><code class='tn'>users</code><span>Người dùng hệ thống, dùng cho cột created_by và phân quyền.</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>BIGSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>full_name</code></td><td class='ty'>VARCHAR(150)</td><td class='c'>✓</td><td class='ty'></td><td> Họ tên</td></tr><tr><td><code>email</code></td><td class='ty'>VARCHAR(150)</td><td class='c'>✓</td><td class='ty'></td><td> Email đăng nhập, duy nhất</td></tr><tr><td><code>role</code></td><td class='ty'>VARCHAR(20)</td><td class='c'>✓</td><td class='ty'>STAFF</td><td> ADMIN · PURCHASING (mua) · SALES (bán) · STAFF</td></tr><tr><td><code>is_active</code></td><td class='ty'>BOOLEAN</td><td class='c'>✓</td><td class='ty'>true</td><td> FALSE = ẩn khỏi danh sách chọn, không xóa</td></tr><tr><td><code>created_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm tạo</td></tr></tbody></table></div></details>
+<details class='tbl' id='t-ports' open><summary><code class='tn'>ports</code><span>Cảng đến. Thay cho mảng <code>portsList</code> trong HTML. Phí LCC KHÔNG nằm ở đây mà ở <code>fee_rates</code>.</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>BIGSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>code</code></td><td class='ty'>VARCHAR(10)</td><td class='c'>✓</td><td class='ty'></td><td> Mã nội bộ, khớp Excel: HCM, HP</td></tr><tr><td><code>un_locode</code></td><td class='ty'>VARCHAR(5)</td><td class='c'></td><td class='ty'></td><td> Mã quốc tế: VNSGN, VNHPH</td></tr><tr><td><code>name</code></td><td class='ty'>VARCHAR(100)</td><td class='c'>✓</td><td class='ty'></td><td> Tên hiển thị: HCM (Cát Lái)</td></tr><tr><td><code>is_active</code></td><td class='ty'>BOOLEAN</td><td class='c'>✓</td><td class='ty'>true</td><td> FALSE = ẩn khỏi danh sách chọn, không xóa</td></tr><tr><td><code>created_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm tạo</td></tr><tr><td><code>updated_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm sửa gần nhất (backend cập nhật)</td></tr></tbody></table></div></details>
+<details class='tbl' id='t-fee_types' open><summary><code class='tn'>fee_types</code><span>Các loại phụ phí. Thêm loại phí mới = thêm 1 dòng, không phải sửa bảng.</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>SMALLSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>code</code></td><td class='ty'>VARCHAR(20)</td><td class='c'>✓</td><td class='ty'></td><td> LCC · LOGISTICS · SALES · OPS · BANK · DOC</td></tr><tr><td><code>name</code></td><td class='ty'>VARCHAR(100)</td><td class='c'>✓</td><td class='ty'></td><td> Tên hiển thị</td></tr><tr><td><code>is_port_specific</code></td><td class='ty'>BOOLEAN</td><td class='c'>✓</td><td class='ty'>false</td><td> TRUE nếu mức phí khác nhau theo cảng (LCC)</td></tr><tr><td><code>sort_order</code></td><td class='ty'>SMALLINT</td><td class='c'>✓</td><td class='ty'>0</td><td> Thứ tự hiển thị trên form</td></tr><tr><td><code>is_active</code></td><td class='ty'>BOOLEAN</td><td class='c'>✓</td><td class='ty'>true</td><td> FALSE = ẩn khỏi danh sách chọn, không xóa</td></tr></tbody></table></div></details>
+<details class='tbl' id='t-fee_rates' open><summary><code class='tn'>fee_rates</code><span>Định mức phí VNĐ/tấn có hiệu lực theo ngày. LCC có port_id; các phí cố định để port_id NULL (áp dụng mọi cảng).</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>BIGSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>fee_type_id</code></td><td class='ty'>SMALLINT</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag fk">FK → fee_types</span> → fee_types.id</td></tr><tr><td><code>port_id</code></td><td class='ty'>BIGINT</td><td class='c'></td><td class='ty'></td><td><span class="tag fk">FK → ports</span> → ports.id; NULL = áp dụng mọi cảng</td></tr><tr><td><code>amount_vnd_per_ton</code></td><td class='ty'>NUMERIC(14,2)</td><td class='c'>✓</td><td class='ty'></td><td> Mức phí, VNĐ/tấn (VD 500000)</td></tr><tr><td><code>effective_from</code></td><td class='ty'>DATE</td><td class='c'>✓</td><td class='ty'></td><td> Ngày bắt đầu hiệu lực</td></tr><tr><td><code>effective_to</code></td><td class='ty'>DATE</td><td class='c'></td><td class='ty'></td><td> Ngày hết hiệu lực; NULL = đang áp dụng</td></tr><tr><td><code>created_by</code></td><td class='ty'>BIGINT</td><td class='c'></td><td class='ty'></td><td><span class="tag fk">FK → users</span> Người tạo → users.id</td></tr><tr><td><code>created_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm tạo</td></tr></tbody></table></div></details>
+<details class='tbl' id='t-suppliers' open><summary><code class='tn'>suppliers</code><span>Nhà cung cấp nước ngoài (Thiên Tân, AKP, Sivaram SHT, Red Impex…).</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>BIGSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>code</code></td><td class='ty'>VARCHAR(20)</td><td class='c'>✓</td><td class='ty'></td><td> Mã NCC, duy nhất (THIENTAN)</td></tr><tr><td><code>name</code></td><td class='ty'>VARCHAR(200)</td><td class='c'>✓</td><td class='ty'></td><td> Tên NCC</td></tr><tr><td><code>country</code></td><td class='ty'>VARCHAR(60)</td><td class='c'></td><td class='ty'></td><td> Quốc gia</td></tr><tr><td><code>contact_name</code></td><td class='ty'>VARCHAR(100)</td><td class='c'></td><td class='ty'></td><td> Người liên hệ</td></tr><tr><td><code>phone</code></td><td class='ty'>VARCHAR(30)</td><td class='c'></td><td class='ty'></td><td> Điện thoại</td></tr><tr><td><code>email</code></td><td class='ty'>VARCHAR(150)</td><td class='c'></td><td class='ty'></td><td> Email</td></tr><tr><td><code>payment_terms</code></td><td class='ty'>VARCHAR(100)</td><td class='c'></td><td class='ty'></td><td> Điều khoản thanh toán</td></tr><tr><td><code>is_active</code></td><td class='ty'>BOOLEAN</td><td class='c'>✓</td><td class='ty'>true</td><td> FALSE = ẩn khỏi danh sách chọn, không xóa</td></tr><tr><td><code>note</code></td><td class='ty'>TEXT</td><td class='c'></td><td class='ty'></td><td> Ghi chú tự do</td></tr><tr><td><code>created_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm tạo</td></tr><tr><td><code>updated_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm sửa gần nhất (backend cập nhật)</td></tr></tbody></table></div></details>
+<details class='tbl' id='t-products' open><summary><code class='tn'>products</code><span>Mặt hàng, tách tên và cỡ để so sánh đúng mặt hàng (Hành lai + 25-32).</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>BIGSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>code</code></td><td class='ty'>VARCHAR(30)</td><td class='c'>✓</td><td class='ty'></td><td> Mã SP, duy nhất (HL-2532)</td></tr><tr><td><code>name</code></td><td class='ty'>VARCHAR(150)</td><td class='c'>✓</td><td class='ty'></td><td> Tên SP: Hành lai</td></tr><tr><td><code>spec</code></td><td class='ty'>VARCHAR(100)</td><td class='c'></td><td class='ty'></td><td> Quy cách/cỡ: 25-32 (có thể trống)</td></tr><tr><td><code>hs_code</code></td><td class='ty'>VARCHAR(12)</td><td class='c'></td><td class='ty'></td><td> Mã HS hải quan</td></tr><tr><td><code>default_bag_weight_kg</code></td><td class='ty'>NUMERIC(10,3)</td><td class='c'></td><td class='ty'></td><td> Kg/bao gợi ý khi nhập</td></tr><tr><td><code>vat_rate</code></td><td class='ty'>NUMERIC(5,4)</td><td class='c'>✓</td><td class='ty'>0.05</td><td> Thuế suất VAT: 0.05 = 5%</td></tr><tr><td><code>is_active</code></td><td class='ty'>BOOLEAN</td><td class='c'>✓</td><td class='ty'>true</td><td> FALSE = ẩn khỏi danh sách chọn, không xóa</td></tr><tr><td><code>created_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm tạo</td></tr><tr><td><code>updated_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm sửa gần nhất (backend cập nhật)</td></tr></tbody></table></div></details>
+<details class='tbl' id='t-exchange_rates' open><summary><code class='tn'>exchange_rates</code><span>Tỷ giá theo ngày, để gợi ý tỷ giá khi nhập báo giá. Báo giá vẫn lưu tỷ giá riêng.</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>BIGSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>rate_date</code></td><td class='ty'>DATE</td><td class='c'>✓</td><td class='ty'></td><td> Ngày tỷ giá</td></tr><tr><td><code>currency</code></td><td class='ty'>CHAR(3)</td><td class='c'>✓</td><td class='ty'>USD</td><td> USD</td></tr><tr><td><code>rate_vnd</code></td><td class='ty'>NUMERIC(12,2)</td><td class='c'>✓</td><td class='ty'></td><td> VNĐ cho 1 USD</td></tr><tr><td><code>source</code></td><td class='ty'>VARCHAR(30)</td><td class='c'>✓</td><td class='ty'>VCB</td><td> Nguồn: VCB…</td></tr></tbody></table></div></details>
+<h3 class='grp'>Yêu cầu của khách</h3><p class='muted'>Điểm bắt đầu quy trình: khách cần mặt hàng gì, cảng nào, quy cách, số lượng.</p>
+<details class='tbl' id='t-customers' open><summary><code class='tn'>customers</code><span>Khách hàng.</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>BIGSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>code</code></td><td class='ty'>VARCHAR(20)</td><td class='c'>✓</td><td class='ty'></td><td> Mã KH, duy nhất</td></tr><tr><td><code>name</code></td><td class='ty'>VARCHAR(200)</td><td class='c'>✓</td><td class='ty'></td><td> Tên khách</td></tr><tr><td><code>tax_code</code></td><td class='ty'>VARCHAR(20)</td><td class='c'></td><td class='ty'></td><td> Mã số thuế</td></tr><tr><td><code>address</code></td><td class='ty'>TEXT</td><td class='c'></td><td class='ty'></td><td> Địa chỉ</td></tr><tr><td><code>contact_name</code></td><td class='ty'>VARCHAR(100)</td><td class='c'></td><td class='ty'></td><td> Người liên hệ</td></tr><tr><td><code>phone</code></td><td class='ty'>VARCHAR(30)</td><td class='c'></td><td class='ty'></td><td> Điện thoại</td></tr><tr><td><code>email</code></td><td class='ty'>VARCHAR(150)</td><td class='c'></td><td class='ty'></td><td> Email</td></tr><tr><td><code>default_port_id</code></td><td class='ty'>BIGINT</td><td class='c'></td><td class='ty'></td><td><span class="tag fk">FK → ports</span> Cảng nhận hàng mặc định</td></tr><tr><td><code>payment_terms</code></td><td class='ty'>VARCHAR(100)</td><td class='c'></td><td class='ty'></td><td> Điều khoản thanh toán</td></tr><tr><td><code>is_active</code></td><td class='ty'>BOOLEAN</td><td class='c'>✓</td><td class='ty'>true</td><td> FALSE = ẩn khỏi danh sách chọn, không xóa</td></tr><tr><td><code>created_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm tạo</td></tr><tr><td><code>updated_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm sửa gần nhất (backend cập nhật)</td></tr></tbody></table></div></details>
+<details class='tbl' id='t-customer_requests' open><summary><code class='tn'>customer_requests</code><span>Phiếu yêu cầu báo giá của khách (header).</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>BIGSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>request_no</code></td><td class='ty'>VARCHAR(30)</td><td class='c'>✓</td><td class='ty'></td><td> Số phiếu YC-2026-0001 (backend tự sinh)</td></tr><tr><td><code>customer_id</code></td><td class='ty'>BIGINT</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag fk">FK → customers</span> → customers.id</td></tr><tr><td><code>request_date</code></td><td class='ty'>DATE</td><td class='c'>✓</td><td class='ty'></td><td> Ngày khách gửi yêu cầu</td></tr><tr><td><code>quote_deadline</code></td><td class='ty'>DATE</td><td class='c'></td><td class='ty'></td><td> Hạn phải gửi giá cho khách</td></tr><tr><td><code>status</code></td><td class='ty'>VARCHAR(12)</td><td class='c'>✓</td><td class='ty'>NEW</td><td> NEW · SOURCING (đang lấy giá) · QUOTED (đã gửi giá) · CANCELLED</td></tr><tr><td><code>note</code></td><td class='ty'>TEXT</td><td class='c'></td><td class='ty'></td><td> Ghi chú tự do</td></tr><tr><td><code>created_by</code></td><td class='ty'>BIGINT</td><td class='c'></td><td class='ty'></td><td><span class="tag fk">FK → users</span> Người tạo → users.id</td></tr><tr><td><code>created_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm tạo</td></tr><tr><td><code>updated_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm sửa gần nhất (backend cập nhật)</td></tr></tbody></table></div></details>
+<details class='tbl' id='t-customer_request_items' open><summary><code class='tn'>customer_request_items</code><span>Từng dòng yêu cầu: mặt hàng, cảng đến, quy cách bao, số lượng. Lưu luôn NCC được chọn cho dòng này.</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>BIGSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>request_id</code></td><td class='ty'>BIGINT</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag fk">FK → customer_requests</span> → customer_requests.id</td></tr><tr><td><code>line_no</code></td><td class='ty'>SMALLINT</td><td class='c'>✓</td><td class='ty'></td><td> STT dòng</td></tr><tr><td><code>product_id</code></td><td class='ty'>BIGINT</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag fk">FK → products</span> Mặt hàng khách cần → products.id</td></tr><tr><td><code>port_id</code></td><td class='ty'>BIGINT</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag fk">FK → ports</span> Cảng đến → ports.id</td></tr><tr><td><code>bag_weight_kg</code></td><td class='ty'>NUMERIC(10,3)</td><td class='c'>✓</td><td class='ty'></td><td> Quy cách: kg/bao khách cần</td></tr><tr><td><code>quantity_kg</code></td><td class='ty'>NUMERIC(14,3)</td><td class='c'>✓</td><td class='ty'></td><td> Số lượng khách cần (kg)</td></tr><tr><td><code>required_delivery_date</code></td><td class='ty'>DATE</td><td class='c'></td><td class='ty'></td><td> Ngày khách cần hàng</td></tr><tr><td><code>selected_supplier_item_id</code></td><td class='ty'>BIGINT</td><td class='c'></td><td class='ty'></td><td><span class="tag fk">FK → supplier_quotation_items</span> NCC được chọn → supplier_quotation_items.id</td></tr><tr><td><code>note</code></td><td class='ty'>TEXT</td><td class='c'></td><td class='ty'></td><td> Ghi chú tự do</td></tr></tbody></table></div></details>
+<h3 class='grp'>Báo giá NCC</h3><p class='muted'>Nhiều NCC chào giá cho từng dòng yêu cầu — phần HTML hiện tại đang làm.</p>
+<details class='tbl' id='t-supplier_quotations' open><summary><code class='tn'>supplier_quotations</code><span>Phiếu báo giá của 1 NCC trong 1 ngày tới 1 cảng (header). Một phiếu có nhiều dòng sản phẩm.</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>BIGSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>quote_no</code></td><td class='ty'>VARCHAR(30)</td><td class='c'>✓</td><td class='ty'></td><td> Số phiếu BGNCC-2026-0001 (backend tự sinh)</td></tr><tr><td><code>supplier_id</code></td><td class='ty'>BIGINT</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag fk">FK → suppliers</span> → suppliers.id</td></tr><tr><td><code>quote_date</code></td><td class='ty'>DATE</td><td class='c'>✓</td><td class='ty'></td><td> Ngày báo giá</td></tr><tr><td><code>valid_until</code></td><td class='ty'>DATE</td><td class='c'></td><td class='ty'></td><td> Hạn hiệu lực; quá hạn thì không đưa vào so sánh</td></tr><tr><td><code>port_id</code></td><td class='ty'>BIGINT</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag fk">FK → ports</span> Cảng đến → ports.id</td></tr><tr><td><code>currency</code></td><td class='ty'>CHAR(3)</td><td class='c'>✓</td><td class='ty'>USD</td><td> USD</td></tr><tr><td><code>exchange_rate</code></td><td class='ty'>NUMERIC(12,2)</td><td class='c'>✓</td><td class='ty'></td><td> Tỷ giá dùng cho phiếu này (10.000–50.000)</td></tr><tr><td><code>status</code></td><td class='ty'>VARCHAR(12)</td><td class='c'>✓</td><td class='ty'>ACTIVE</td><td> DRAFT · ACTIVE · SELECTED · REJECTED · EXPIRED · SUPERSEDED</td></tr><tr><td><code>supersedes_id</code></td><td class='ty'>BIGINT</td><td class='c'></td><td class='ty'></td><td><span class="tag fk">FK → supplier_quotations</span> Phiếu cũ mà phiếu này thay thế (báo lại giá)</td></tr><tr><td><code>note</code></td><td class='ty'>TEXT</td><td class='c'></td><td class='ty'></td><td> Ghi chú tự do</td></tr><tr><td><code>created_by</code></td><td class='ty'>BIGINT</td><td class='c'></td><td class='ty'></td><td><span class="tag fk">FK → users</span> Người tạo → users.id</td></tr><tr><td><code>created_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm tạo</td></tr><tr><td><code>updated_at</code></td><td class='ty'>TIMESTAMPTZ</td><td class='c'>✓</td><td class='ty'>now()</td><td> Thời điểm sửa gần nhất (backend cập nhật)</td></tr></tbody></table></div></details>
+<details class='tbl' id='t-supplier_quotation_items' open><summary><code class='tn'>supplier_quotation_items</code><span>Từng dòng giá trong phiếu, gắn với dòng yêu cầu của khách. Các cột cost/fees/landed/amount do backend tính.</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>BIGSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>quotation_id</code></td><td class='ty'>BIGINT</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag fk">FK → supplier_quotations</span> → supplier_quotations.id</td></tr><tr><td><code>line_no</code></td><td class='ty'>SMALLINT</td><td class='c'>✓</td><td class='ty'></td><td> STT dòng trong phiếu</td></tr><tr><td><code>request_item_id</code></td><td class='ty'>BIGINT</td><td class='c'></td><td class='ty'></td><td><span class="tag fk">FK → customer_request_items</span> Báo cho dòng yêu cầu nào; NULL = báo giá tham khảo</td></tr><tr><td><code>product_id</code></td><td class='ty'>BIGINT</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag fk">FK → products</span> → products.id</td></tr><tr><td><code>bag_weight_kg</code></td><td class='ty'>NUMERIC(10,3)</td><td class='c'>✓</td><td class='ty'></td><td> Kg / bao</td></tr><tr><td><code>bag_count</code></td><td class='ty'>INTEGER</td><td class='c'>✓</td><td class='ty'></td><td> Số bao NCC chào</td></tr><tr><td><code>quantity_kg</code></td><td class='ty'>NUMERIC(14,3)</td><td class='c'></td><td class='ty'></td><td><span class="tag gen">DB tự tính</span> = bag_weight_kg × bag_count (số lượng NCC chào)</td></tr><tr><td><code>unit_price_usd_per_kg</code></td><td class='ty'>NUMERIC(12,6)</td><td class='c'>✓</td><td class='ty'></td><td> Đơn giá USD/KG (0 &lt; giá ≤ 20)</td></tr><tr><td><code>cost_vnd_per_ton</code></td><td class='ty'>NUMERIC(16,2)</td><td class='c'></td><td class='ty'></td><td><span class="tag calc">Backend tính</span> Giá vốn VNĐ/tấn</td></tr><tr><td><code>fees_total_vnd_per_ton</code></td><td class='ty'>NUMERIC(16,2)</td><td class='c'></td><td class='ty'></td><td><span class="tag calc">Backend tính</span> Tổng phụ phí VNĐ/tấn</td></tr><tr><td><code>landed_cost_vnd_per_ton</code></td><td class='ty'>NUMERIC(16,2)</td><td class='c'></td><td class='ty'></td><td><span class="tag calc">Backend tính</span> Thành tiền VNĐ/tấn (dùng để so sánh)</td></tr><tr><td><code>vat_rate</code></td><td class='ty'>NUMERIC(5,4)</td><td class='c'>✓</td><td class='ty'>0.05</td><td> Copy từ products.vat_rate khi tạo</td></tr><tr><td><code>amount_before_vat</code></td><td class='ty'>NUMERIC(18,0)</td><td class='c'></td><td class='ty'></td><td><span class="tag calc">Backend tính</span> Tổng tiền hàng</td></tr><tr><td><code>vat_amount</code></td><td class='ty'>NUMERIC(18,0)</td><td class='c'></td><td class='ty'></td><td><span class="tag calc">Backend tính</span> Tiền VAT</td></tr><tr><td><code>amount_after_vat</code></td><td class='ty'>NUMERIC(18,0)</td><td class='c'></td><td class='ty'></td><td><span class="tag calc">Backend tính</span> Tổng sau VAT</td></tr><tr><td><code>note</code></td><td class='ty'>TEXT</td><td class='c'></td><td class='ty'></td><td> Ghi chú tự do</td></tr></tbody></table></div></details>
+<details class='tbl' id='t-supplier_quotation_item_fees' open><summary><code class='tn'>supplier_quotation_item_fees</code><span>Ảnh chụp từng khoản phí áp cho dòng đó. Đổi định mức sau này không làm thay đổi báo giá cũ.</span></summary><div class='tw'><table class='cols'><thead><tr><th>Cột</th><th>Kiểu</th><th>Bắt buộc</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead><tbody><tr><td><code>id</code></td><td class='ty'>BIGSERIAL</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag pk">PK</span> Khóa chính, tự tăng</td></tr><tr><td><code>item_id</code></td><td class='ty'>BIGINT</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag fk">FK → supplier_quotation_items</span> → supplier_quotation_items.id</td></tr><tr><td><code>fee_type_id</code></td><td class='ty'>SMALLINT</td><td class='c'>✓</td><td class='ty'></td><td><span class="tag fk">FK → fee_types</span> → fee_types.id</td></tr><tr><td><code>amount_vnd_per_ton</code></td><td class='ty'>NUMERIC(14,2)</td><td class='c'>✓</td><td class='ty'></td><td> Mức phí áp cho dòng này, VNĐ/tấn (có thể sửa tay)</td></tr></tbody></table></div></details>
+<h3 class="grp">View &amp; hàm có sẵn trong database</h3>
+<div class="tw"><table>
+<thead><tr><th>Tên</th><th>Loại</th><th>Dùng để</th></tr></thead>
+<tbody>
+<tr><td><code>v_request_quote_comparison</code></td><td>View</td><td><b>So sánh chính.</b> Với mỗi dòng yêu cầu của khách: báo giá mới nhất của từng NCC, tổng tiền tính lại theo số lượng khách cần, cờ đúng quy cách / đủ số lượng / đúng cảng, <code>price_rank</code>, <code>diff_amount</code>, <code>diff_pct</code>, <code>is_best</code>.</td></tr>
+<tr><td><code>v_supplier_quote_comparison</code></td><td>View</td><td>Bảng giá tham khảo theo tấn của mọi báo giá (kể cả không gắn yêu cầu), xếp hạng trong cùng sản phẩm. Dùng để tra lịch sử giá.</td></tr>
+<tr><td><code>fn_fee_rates_for(port_id, date)</code></td><td>Hàm</td><td>Trả định mức phí đang áp dụng cho một cảng tại một ngày (ưu tiên mức riêng của cảng).</td></tr>
+<tr><td><code>fn_snapshot_default_fees(item_id)</code></td><td>Hàm</td><td>Chép định mức phí vào dòng báo giá mới tạo rồi tính lại dòng đó.</td></tr>
+<tr><td><code>fn_recalc_supplier_item(item_id)</code></td><td>Hàm</td><td>Tính lại giá vốn, phụ phí, thành tiền, VAT của một dòng báo giá NCC.</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="cong-thuc">
+<h2><span class="no">5</span>Công thức tính</h2>
+<h3>5.1 Báo giá NCC </h3>
+<p class="muted">Ví dụ: Thiên Tân, Hành lai 25-32, bao 10 kg × 6.000 bao, 0,3648 USD/kg, tỷ giá 26.170, cảng HCM.</p>
+<div class="formula">
+  <div class="row h"><div>Cột</div><div>Công thức</div><div>Ví dụ</div></div>
+  <div class="row"><div class="k">quantity_kg<small>Khối lượng NCC chào</small></div><div class="eq">bag_weight_kg × bag_count</div><div class="ex">10 × 6.000 = 60.000 kg</div></div>
+  <div class="row"><div class="k">quantity_ton<small>Số tấn (không lưu)</small></div><div class="eq">quantity_kg / 1000</div><div class="ex">60 tấn</div></div>
+  <div class="row"><div class="k">cost_vnd_per_ton<small>Giá vốn</small></div><div class="eq">unit_price_usd_per_kg × exchange_rate × 1000</div><div class="ex">9.546.816</div></div>
+  <div class="row"><div class="k">fees_total_vnd_per_ton<small>Tổng phụ phí</small></div><div class="eq">Σ item_fees.amount_vnd_per_ton<br>= LCC (theo cảng) + LOGISTICS + SALES + OPS + BANK + DOC</div><div class="ex">500.000 + 600.000 + 200.000 + 15.000 + 1.000 + 56.000 = 1.372.000</div></div>
+  <div class="row total"><div class="k">landed_cost_vnd_per_ton<small>Thành tiền/tấn</small></div><div class="eq">cost_vnd_per_ton + fees_total_vnd_per_ton</div><div class="ex">10.918.816</div></div>
+  <div class="row"><div class="k">amount_before_vat<small>Tổng tiền hàng</small></div><div class="eq">ROUND(landed_cost_vnd_per_ton × quantity_ton)</div><div class="ex">655.128.960</div></div>
+  <div class="row"><div class="k">vat_amount</div><div class="eq">ROUND(amount_before_vat × vat_rate)</div><div class="ex">32.756.448</div></div>
+  <div class="row total"><div class="k">amount_after_vat<small>Tổng sau VAT</small></div><div class="eq">amount_before_vat + vat_amount</div><div class="ex">687.885.408</div></div>
+</div>
+
+<h3>5.2 So sánh NCC theo yêu cầu của khách (so sánh chính)</h3>
+<p>Mỗi NCC có thể chào số lượng và quy cách khác nhau. Để so tổng sau VAT cho công bằng, hệ thống <b>tính lại tổng tiền của mọi NCC theo đúng số lượng khách cần</b>, rồi mới xếp hạng trong từng dòng yêu cầu.</p>
+<div class="formula">
+  <div class="row h"><div>Cột (view)</div><div>Công thức</div><div>Ghi chú</div></div>
+  <div class="row"><div class="k">phạm vi</div><div class="eq">supplier_quotation_items.request_item_id = dòng yêu cầu; status IN (ACTIVE, SELECTED); chưa quá valid_until</div><div class="ex">Mới nhất mỗi (NCC, kg/bao)</div></div>
+  <div class="row"><div class="k">spec_match<small>Đúng quy cách</small></div><div class="eq">offered_bag_weight_kg = requested_bag_weight_kg</div><div class="ex">Bao 10 kg = 10 kg</div></div>
+  <div class="row"><div class="k">quantity_enough<small>Đủ số lượng</small></div><div class="eq">offered_quantity_kg ≥ requested_quantity_kg</div><div class="ex">NCC chào ≥ khách cần</div></div>
+  <div class="row"><div class="k">port_match</div><div class="eq">supplier_quotations.port_id = customer_request_items.port_id</div><div class="ex"></div></div>
+  <div class="row"><div class="k">eligible<small>Đủ điều kiện</small></div><div class="eq">spec_match AND quantity_enough AND port_match</div><div class="ex">Chỉ NCC đủ điều kiện mới được gợi ý</div></div>
+  <div class="row"><div class="k">req_amount_before_vat</div><div class="eq">ROUND(landed_cost_vnd_per_ton × requested_quantity_kg / 1000)</div><div class="ex">Theo số lượng KHÁCH CẦN</div></div>
+  <div class="row"><div class="k">req_vat_amount</div><div class="eq">ROUND(req_amount_before_vat × vat_rate)</div><div class="ex"></div></div>
+  <div class="row total"><div class="k">req_amount_after_vat<small>Tổng sau VAT để so sánh</small></div><div class="eq">req_amount_before_vat + req_vat_amount</div><div class="ex"></div></div>
+  <div class="row"><div class="k">price_rank</div><div class="eq">RANK trong cùng request_item_id, NCC đủ điều kiện đứng trước, rồi theo req_amount_after_vat tăng dần</div><div class="ex"></div></div>
+  <div class="row"><div class="k">diff_amount / diff_pct</div><div class="eq">req_amount_after_vat − MIN(của NCC đủ điều kiện); % = tỷ lệ chênh × 100</div><div class="ex">Số âm = rẻ hơn nhưng không đủ điều kiện</div></div>
+  <div class="row total"><div class="k">is_best</div><div class="eq">eligible AND price_rank = 1</div><div class="ex">Huy hiệu “Tối ưu nhất”</div></div>
+</div>
+<p>Kết quả thật của view với yêu cầu mẫu <code>YC-2026-0001</code> (khách mẫu; NCC và giá lấy từ file Excel):</p>
+<div class="tw"><table class="wide">
+<thead><tr><th>Dòng yêu cầu</th><th>NCC</th><th>NCC chào</th><th>Điều kiện</th><th>Thành tiền/tấn</th><th>Tổng sau VAT (theo SL khách)</th><th>Hạng</th><th>Chênh lệch</th></tr></thead>
+<tbody><tr class='best'><td>1. Hành lai 25-32 · HCM · bao 10 kg · 60 tấn</td><td>Thiên Tân</td><td>bao 10 kg · 60 tấn</td><td><span class="tag gen">Đủ điều kiện</span></td><td class='n'>10.918.816</td><td class='n'>687.885.408</td><td class='n'>1</td><td class='n'>Tối ưu nhất</td></tr><tr class=''><td>1. Hành lai 25-32 · HCM · bao 10 kg · 60 tấn</td><td>Thiên Tân</td><td>bao 30 kg · 30 tấn</td><td><span class="tag calc">khác quy cách, thiếu số lượng</span></td><td class='n'>10.730.392</td><td class='n'>676.014.696</td><td class='n'>2</td><td class='n'>-11.870.712 đ (-1,73%)</td></tr><tr class='best'><td>2. S17 Stem best · HP · bao 9,5 kg · 13,3 tấn</td><td>AKP</td><td>bao 9,5 kg · 13,3 tấn</td><td><span class="tag gen">Đủ điều kiện</span></td><td class='n'>65.786.500</td><td class='n'>918.708.473</td><td class='n'>1</td><td class='n'>Tối ưu nhất</td></tr><tr class=''><td>2. S17 Stem best · HP · bao 9,5 kg · 13,3 tấn</td><td>Sivaram SHT</td><td>bao 9,5 kg · 13,3 tấn</td><td><span class="tag gen">Đủ điều kiện</span></td><td class='n'>67.676.500</td><td class='n'>945.102.323</td><td class='n'>2</td><td class='n'>+26.393.850 đ (+2,87%)</td></tr></tbody></table></div>
+<div class="note">Bao 30 kg của Thiên Tân rẻ hơn 11,87 triệu nhưng sai quy cách và chỉ chào 30 tấn, nên không được gợi ý. Màn hình vẫn hiện dòng này để nhân viên cân nhắc hỏi lại khách.</div>
+
+<h3>5.3 Bảng giá tham khảo theo tấn</h3>
+<p class="muted">View <code>v_supplier_quote_comparison</code>: mọi báo giá còn hiệu lực, kể cả chưa gắn yêu cầu, xếp hạng theo thành tiền/tấn trong cùng sản phẩm. Dùng để tra nhanh NCC nào đang rẻ trước khi có yêu cầu.</p>
+<div class="tw"><table>
+<thead><tr><th>Sản phẩm</th><th>NCC</th><th>Cảng</th><th>Kg/bao</th><th>USD/kg</th><th>Thành tiền/tấn</th><th>Tổng sau VAT (SL NCC chào)</th><th>Hạng</th><th>Chênh lệch</th></tr></thead>
+<tbody><tr class='best'><td>Cà rốt</td><td>Thiên Tân</td><td>HCM</td><td class='n'>10</td><td class='n'>0.26438</td><td class='n'>8.298.756</td><td class='n'>257.053.967</td><td class='n'>1</td><td class='n'>Thấp nhất</td></tr><tr class='best'><td>Hành Bellary</td><td>Red Impex</td><td>HCM</td><td class='n'>10</td><td class='n'>0.585</td><td class='n'>16.687.300</td><td class='n'>525.649.950</td><td class='n'>1</td><td class='n'>Thấp nhất</td></tr><tr class='best'><td>Hành lai 25-32</td><td>Thiên Tân</td><td>HCM</td><td class='n'>30</td><td class='n'>0.3576</td><td class='n'>10.730.392</td><td class='n'>338.007.348</td><td class='n'>1</td><td class='n'>Thấp nhất</td></tr><tr class=''><td>Hành lai 25-32</td><td>Thiên Tân</td><td>HCM</td><td class='n'>10</td><td class='n'>0.3648</td><td class='n'>10.918.816</td><td class='n'>687.885.408</td><td class='n'>2</td><td class='n'>+1,76%</td></tr><tr class='best'><td>Hành lai 35-50</td><td>Thiên Tân</td><td>HCM</td><td class='n'>30</td><td class='n'>0.501</td><td class='n'>14.483.170</td><td class='n'>456.219.855</td><td class='n'>1</td><td class='n'>Thấp nhất</td></tr><tr class=''><td>Hành lai 35-50</td><td>Thiên Tân</td><td>HCM</td><td class='n'>10</td><td class='n'>0.509</td><td class='n'>14.692.530</td><td class='n'>462.814.695</td><td class='n'>2</td><td class='n'>+1,45%</td></tr><tr class='best'><td>S17 Stem best</td><td>AKP</td><td>HP</td><td class='n'>9.5</td><td class='n'>2.45</td><td class='n'>65.786.500</td><td class='n'>918.708.473</td><td class='n'>1</td><td class='n'>Thấp nhất</td></tr><tr class=''><td>S17 Stem best</td><td>Sivaram SHT</td><td>HP</td><td class='n'>9.5</td><td class='n'>2.525</td><td class='n'>67.676.500</td><td class='n'>945.102.323</td><td class='n'>2</td><td class='n'>+2,87%</td></tr><tr class='best'><td>S17 Stem medium best</td><td>Sivaram SHT</td><td>HP</td><td class='n'>9.5</td><td class='n'>2.425</td><td class='n'>65.058.500</td><td class='n'>908.541.953</td><td class='n'>1</td><td class='n'>Thấp nhất</td></tr></tbody></table></div>
+
+<h3>5.4 Giá gửi khách</h3>
+<p>Sau khi chọn NCC cho từng dòng (<code>customer_request_items.selected_supplier_item_id</code>), view <code>v_request_customer_quote</code> trả về nội dung gửi khách. Giá gửi khách = thành tiền/tấn của NCC đã chọn (đã gồm phí bán hàng 200.000 đ/tấn), tính theo số lượng khách cần:</p>
+<div class="formula">
+  <div class="row h"><div>Cột</div><div>Công thức</div><div>Ví dụ dòng 1</div></div>
+  <div class="row"><div class="k">price_vnd_per_ton</div><div class="eq">landed_cost_vnd_per_ton của NCC đã chọn</div><div class="ex">10.918.816</div></div>
+  <div class="row"><div class="k">amount_before_vat</div><div class="eq">= req_amount_before_vat</div><div class="ex">655.128.960</div></div>
+  <div class="row"><div class="k">vat_amount</div><div class="eq">= req_vat_amount</div><div class="ex">32.756.448</div></div>
+  <div class="row total"><div class="k">amount_after_vat</div><div class="eq">= req_amount_after_vat</div><div class="ex">687.885.408</div></div>
+  <div class="row"><div class="k">tổng cả yêu cầu</div><div class="eq">Σ amount_after_vat các dòng</div><div class="ex">1.606.593.881</div></div>
+</div>
+<div class="tw"><table class="wide2">
+<thead><tr><th>Dòng</th><th>Mặt hàng</th><th>Cảng</th><th>Kg/bao</th><th>Số lượng</th><th>NCC đã chọn</th><th>Giá/tấn</th><th>Tiền hàng</th><th>VAT</th><th>Tổng sau VAT</th></tr></thead>
+<tbody><tr><td>1</td><td>Hành lai 25-32</td><td>HCM</td><td class='n'>10</td><td class='n'>60 tấn</td><td>Thiên Tân</td><td class='n'>10.918.816</td><td class='n'>655.128.960</td><td class='n'>32.756.448</td><td class='n'>687.885.408</td></tr><tr><td>2</td><td>S17 Stem best</td><td>HP</td><td class='n'>9,5</td><td class='n'>13,3 tấn</td><td>AKP</td><td class='n'>65.786.500</td><td class='n'>874.960.450</td><td class='n'>43.748.023</td><td class='n'>918.708.473</td></tr></tbody></table></div>
+<div class="note warn"><b>Chờ xác nhận:</b> công ty có cộng thêm lãi ngoài phí bán hàng không. Nếu có, chỉ cần thêm 2 cột <code>margin_type</code>, <code>margin_value</code> vào <code>customer_request_items</code> và nhân vào giá ở view này.</div>
+<div class="note"><b>Làm tròn:</b> giá theo tấn giữ 2 số lẻ; thành tiền làm tròn đến đồng ở <code>amount_before_vat</code>, rồi VAT tính trên số đã làm tròn. Tổng nhiều dòng = cộng các dòng đã làm tròn (không tính lại từ đơn giá).</div>
+</section>
+
+<section id="mapping">
+<h2><span class="no">6</span>HTML hiện tại → Database</h2>
+<p>Từng ô trong file HTML đang có được lưu vào đâu. Ô “Output” chỉ hiển thị, giá trị lấy từ backend trả về. Phần <b>Yêu cầu khách</b> chưa có trong HTML, cần thêm.</p>
+<div class="tw"><table>
+<thead><tr><th>ID trong HTML</th><th>Nhãn</th><th>Lưu vào</th><th>Ghi chú</th></tr></thead>
+<tbody>
+<tr><td colspan="4"><b>Thêm mới — Khối “Yêu cầu khách”</b> (đặt trước khối nhập báo giá)</td></tr>
+<tr><td><code>customer</code></td><td>Khách hàng</td><td><code>customer_requests.customer_id</code></td><td>Ô chọn từ <code>customers</code></td></tr>
+<tr><td><code>requestDate</code> <code>quoteDeadline</code></td><td>Ngày yêu cầu, hạn báo giá</td><td><code>customer_requests.request_date</code>, <code>quote_deadline</code></td><td></td></tr>
+<tr><td><code>reqProduct</code></td><td>Mặt hàng</td><td><code>customer_request_items.product_id</code></td><td>Mỗi dòng yêu cầu 1 mặt hàng</td></tr>
+<tr><td><code>reqPort</code></td><td>Cảng đến</td><td><code>customer_request_items.port_id</code></td><td></td></tr>
+<tr><td><code>reqBagWeight</code></td><td>Quy cách (kg/bao)</td><td><code>customer_request_items.bag_weight_kg</code></td><td></td></tr>
+<tr><td><code>reqQuantity</code></td><td>Số lượng (kg hoặc tấn)</td><td><code>customer_request_items.quantity_kg</code></td><td>Nhập tấn thì × 1.000 trước khi gửi</td></tr>
+<tr><td colspan="4"><b>Khối nhập báo giá NCC</b> (đã có)</td></tr>
+<tr><td><code>requestItem</code> <span class="muted">(thêm)</span></td><td>Báo cho dòng yêu cầu</td><td><code>supplier_quotation_items.request_item_id</code></td><td>Chọn dòng yêu cầu thì tự điền sản phẩm, cảng, kg/bao</td></tr>
+<tr><td><code>supplier</code></td><td>Nhà cung cấp</td><td><code>supplier_quotations.supplier_id</code></td><td>Đổi ô text thành ô chọn từ <code>suppliers</code></td></tr>
+<tr><td><code>quoteDate</code></td><td>Ngày báo giá</td><td><code>supplier_quotations.quote_date</code></td><td></td></tr>
+<tr><td><code>product</code></td><td>Tên sản phẩm</td><td><code>supplier_quotation_items.product_id</code></td><td>Ô chọn từ <code>products</code>; phải trùng sản phẩm của dòng yêu cầu</td></tr>
+<tr><td><code>portSelect</code></td><td>Cảng đến</td><td><code>supplier_quotations.port_id</code></td><td>Đổi cảng thì gọi lại API phí để lấy LCC mới</td></tr>
+<tr><td><code>bagWeight</code></td><td>Kg / bao</td><td><code>supplier_quotation_items.bag_weight_kg</code></td><td>NCC có thể chào quy cách khác</td></tr>
+<tr><td><code>bagCount</code></td><td>Số bao</td><td><code>supplier_quotation_items.bag_count</code></td><td>Số bao NCC chào</td></tr>
+<tr><td><code>priceUsd</code></td><td>Đơn giá USD/kg</td><td><code>supplier_quotation_items.unit_price_usd_per_kg</code></td><td>Chặn &gt; 20</td></tr>
+<tr><td><code>exchangeRate</code></td><td>Tỷ giá</td><td><code>supplier_quotations.exchange_rate</code></td><td>Gợi ý từ <code>exchange_rates</code></td></tr>
+<tr><td><code>feeLcc</code></td><td>Phí LCC</td><td><code>supplier_quotation_item_fees</code> (fee LCC)</td><td>Mặc định từ <code>fee_rates</code> theo cảng</td></tr>
+<tr><td><code>feeLogistics</code> <code>feeSales</code> <code>feeOps</code> <code>feeBank</code> <code>feeDoc</code></td><td>Các phụ phí</td><td><code>supplier_quotation_item_fees</code> (LOGISTICS, SALES, OPS, BANK, DOC)</td><td>Mỗi phí là 1 dòng, không phải 1 cột</td></tr>
+<tr><td><code>outGiaVon</code></td><td>Giá vốn</td><td><code>cost_vnd_per_ton</code></td><td rowspan="6">Backend tính, trả về trong response. Màn hình gọi <code>POST /supplier-quotations/preview</code> khi người dùng gõ (thay hàm <code>calculate()</code>).</td></tr>
+<tr><td><code>outSubFees</code> / <code>outTotalSubFees</code></td><td>Tổng phụ phí</td><td><code>fees_total_vnd_per_ton</code></td></tr>
+<tr><td><code>outThanhTien</code></td><td>Thành tiền/tấn</td><td><code>landed_cost_vnd_per_ton</code></td></tr>
+<tr><td><code>outTotalBeforeVat</code></td><td>Tổng tiền hàng</td><td><code>amount_before_vat</code></td></tr>
+<tr><td><code>outTotalVat</code></td><td>VAT</td><td><code>vat_amount</code></td></tr>
+<tr><td><code>outGrandTotal</code></td><td>Tổng sau VAT</td><td><code>amount_after_vat</code></td></tr>
+<tr><td colspan="4"><b>Danh mục cảng &amp; bảng so sánh</b> (đã có)</td></tr>
+<tr><td><code>newPortId</code> <code>newPortName</code> <code>newPortLcc</code></td><td>Thêm cảng</td><td><code>ports</code> + 1 dòng <code>fee_rates</code> (LCC)</td><td>Thêm cảng và định mức LCC trong cùng 1 transaction</td></tr>
+<tr><td><code>comparisonTableBody</code></td><td>Bảng so sánh</td><td>đọc từ <code>v_request_quote_comparison</code></td><td>Nhóm theo dòng yêu cầu; cột “Tổng sau VAT” dùng <code>req_amount_after_vat</code>; hiện cờ quy cách/số lượng</td></tr>
+<tr><td><code>supplierRecommendationBadge</code></td><td>Gợi ý chọn</td><td>dòng có <code>is_best = TRUE</code></td><td>Mỗi dòng yêu cầu 1 gợi ý</td></tr>
+<tr><td>nút “Chọn NCC” <span class="muted">(thêm)</span></td><td>Chốt NCC</td><td><code>customer_request_items.selected_supplier_item_id</code></td><td>Mặc định là NCC gợi ý; người dùng được chọn NCC khác</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="quy-tac">
+<h2><span class="no">7</span>Quy tắc nghiệp vụ</h2>
+<ul class="rules">
+<li><b>Bắt đầu từ yêu cầu khách.</b> Báo giá NCC nhập để so sánh phải gắn <code>request_item_id</code>. Báo giá không gắn yêu cầu vẫn lưu được, chỉ hiện trong bảng giá tham khảo.</li>
+<li><b>So sánh theo số lượng khách cần.</b> Tổng sau VAT dùng để xếp hạng luôn là <code>req_amount_after_vat</code> (tính theo <code>customer_request_items.quantity_kg</code>), không dùng số lượng NCC chào.</li>
+<li><b>Điều kiện được gợi ý:</b> đúng quy cách bao, đủ số lượng, đúng cảng. NCC không đạt vẫn hiện trong bảng, gắn nhãn lý do, không được gắn “Tối ưu nhất”.</li>
+<li><b>Backend là nơi tính duy nhất.</b> Mọi cột “Backend tính” được tính lại ở server; bỏ qua giá trị frontend gửi lên. Dùng hàm <code>fn_recalc_supplier_item</code> hoặc viết lại đúng công thức mục 5 trong code.</li>
+<li><b>Không ghi đè báo giá.</b> Mỗi lần lưu là một phiếu mới. NCC báo lại giá thì tạo phiếu mới có <code>supersedes_id</code> trỏ về phiếu cũ, và chuyển phiếu cũ sang <code>SUPERSEDED</code>.</li>
+<li><b>Chụp phí (snapshot).</b> Phí áp dụng được chép vào <code>supplier_quotation_item_fees</code> lúc tạo dòng. Đổi định mức phí sau này không làm thay đổi báo giá cũ.</li>
+<li><b>Đổi định mức phí:</b> thêm dòng <code>fee_rates</code> mới với <code>effective_from</code>, đồng thời đặt <code>effective_to</code> của mức cũ = ngày mới − 1. Không sửa đè mức cũ.</li>
+<li><b>Kiểm tra đầu vào</b> (trả lỗi 422 kèm thông báo tiếng Việt):
+  <ul>
+  <li>Đơn giá &gt; 20 USD/kg → “Đơn giá có vẻ đang tính theo USD/tấn. Chia cho 1.000?”</li>
+  <li>Tỷ giá ngoài 10.000–50.000 → từ chối. Lệch &gt; 3% so với tỷ giá gần nhất trong <code>exchange_rates</code> → cho lưu nhưng trả cảnh báo.</li>
+  <li>Báo giá gắn dòng yêu cầu thì <code>product_id</code> phải trùng sản phẩm của dòng yêu cầu. Khác cảng hoặc khác quy cách → cho lưu, trả cảnh báo.</li>
+  <li>Số bao, kg/bao, số lượng phải &gt; 0. Sản phẩm, NCC, cảng, khách phải đang <code>is_active</code>.</li>
+  <li>Trùng NCC + dòng yêu cầu + kg/bao + ngày → cảnh báo “đã có báo giá này”, hỏi có muốn tạo bản báo lại.</li>
+  </ul></li>
+<li><b>Chọn NCC:</b> ghi <code>selected_supplier_item_id</code> cho dòng yêu cầu và chuyển phiếu NCC đó sang <code>SELECTED</code>. Khi mọi dòng đã chọn và gửi khách, yêu cầu chuyển sang <code>QUOTED</code>.</li>
+<li><b>Không xóa cứng danh mục đã dùng.</b> Cảng, NCC, sản phẩm, khách đã có dữ liệu thì chỉ đặt <code>is_active = FALSE</code>. Phiếu báo giá chỉ xóa được khi <code>DRAFT</code>.</li>
+<li><b>Đánh số chứng từ</b> do backend sinh theo năm: <code>YC-2026-0001</code> (yêu cầu khách), <code>BGNCC-2026-0001</code> (báo giá NCC).</li>
+<li><b>Chuyển trạng thái hợp lệ:</b>
+  <ul>
+  <li>Yêu cầu khách: NEW → SOURCING (đang lấy giá) → QUOTED (đã gửi giá); CANCELLED bất kỳ lúc nào</li>
+  <li>Báo giá NCC: DRAFT → ACTIVE → SELECTED | REJECTED | EXPIRED | SUPERSEDED</li>
+  </ul></li>
+<li><b>Phân quyền:</b> ADMIN sửa danh mục &amp; định mức phí; SALES tạo yêu cầu khách và gửi giá; PURCHASING nhập báo giá NCC và chọn NCC; STAFF chỉ xem.</li>
+</ul>
+</section>
+
+<section id="api">
+<h2><span class="no">8</span>API backend</h2>
+<p class="muted">REST, JSON, tiền tố <code>/api/v1</code>. Tên trường JSON dùng đúng tên cột (snake_case).</p>
+<div class="tw"><table class="api">
+<thead><tr><th>Endpoint</th><th>Mô tả</th></tr></thead>
+<tbody>
+<tr><td colspan="2"><b>Danh mục</b></td></tr>
+<tr><td><span class="m get">GET</span><span class="m post">POST</span><code>/ports</code></td><td>Danh sách / thêm cảng. POST nhận thêm <code>lcc_vnd_per_ton</code> để tạo luôn định mức LCC.</td></tr>
+<tr><td><span class="m patch">PATCH</span><code>/ports/:id</code></td><td>Sửa tên, ẩn cảng (<code>is_active</code>).</td></tr>
+<tr><td><span class="m get">GET</span><code>/fee-types</code></td><td>Danh sách loại phí để vẽ form.</td></tr>
+<tr><td><span class="m get">GET</span><code>/fee-rates?port_id=&amp;date=</code></td><td>Định mức đang áp dụng (gọi <code>fn_fee_rates_for</code>) — dùng khi đổi cảng trên form.</td></tr>
+<tr><td><span class="m post">POST</span><code>/fee-rates</code></td><td>Thêm định mức mới, tự đóng mức cũ.</td></tr>
+<tr><td><span class="m get">GET</span><span class="m post">POST</span><span class="m patch">PATCH</span><code>/suppliers</code> <code>/products</code> <code>/customers</code></td><td>CRUD danh mục (không DELETE, dùng <code>is_active</code>).</td></tr>
+<tr><td><span class="m get">GET</span><code>/exchange-rates/latest?currency=USD</code></td><td>Tỷ giá gần nhất để điền sẵn.</td></tr>
+<tr><td colspan="2"><b>Yêu cầu của khách</b></td></tr>
+<tr><td><span class="m post">POST</span><code>/customer-requests</code></td><td>Tạo yêu cầu + các dòng (mặt hàng, cảng, kg/bao, số lượng).</td></tr>
+<tr><td><span class="m get">GET</span><code>/customer-requests?status=&amp;customer_id=</code></td><td>Danh sách yêu cầu, kèm số báo giá NCC đã có cho mỗi dòng.</td></tr>
+<tr><td><span class="m get">GET</span><span class="m put">PUT</span><code>/customer-requests/:id</code></td><td>Xem / sửa yêu cầu (sửa khi chưa QUOTED).</td></tr>
+<tr><td><span class="m patch">PATCH</span><code>/customer-requests/:id/status</code></td><td>Đổi trạng thái theo luồng hợp lệ.</td></tr>
+<tr><td><span class="m get">GET</span><code>/customer-requests/:id/comparison</code></td><td>Đọc <code>v_request_quote_comparison</code>, nhóm theo dòng yêu cầu.</td></tr>
+<tr><td><span class="m put">PUT</span><code>/customer-request-items/:id/selected-supplier</code></td><td>Body <code>{ "supplier_item_id": 7 }</code>. Chốt NCC cho dòng, phiếu NCC → SELECTED.</td></tr>
+<tr><td><span class="m get">GET</span><code>/customer-requests/:id/customer-quote</code></td><td>Đọc <code>v_request_customer_quote</code>: nội dung giá gửi khách.</td></tr>
+<tr><td colspan="2"><b>Báo giá NCC</b></td></tr>
+<tr><td><span class="m post">POST</span><code>/supplier-quotations/preview</code></td><td>Tính thử, không lưu. Thay hàm <code>calculate()</code> trong HTML.</td></tr>
+<tr><td><span class="m post">POST</span><code>/supplier-quotations</code></td><td>Tạo phiếu + các dòng (mỗi dòng có thể gắn <code>request_item_id</code>, có thể sửa phí tay). Trả về phiếu đã tính.</td></tr>
+<tr><td><span class="m get">GET</span><code>/supplier-quotations?supplier_id=&amp;product_id=&amp;request_id=&amp;from=&amp;to=&amp;status=</code></td><td>Tra cứu lịch sử báo giá.</td></tr>
+<tr><td><span class="m get">GET</span><span class="m put">PUT</span><code>/supplier-quotations/:id</code></td><td>Xem / sửa phiếu (chỉ khi DRAFT; ACTIVE thì tạo bản báo lại).</td></tr>
+<tr><td><span class="m post">POST</span><code>/supplier-quotations/:id/revise</code></td><td>Tạo bản báo lại, phiếu cũ → SUPERSEDED.</td></tr>
+<tr><td><span class="m patch">PATCH</span><code>/supplier-quotations/:id/status</code></td><td>Đổi trạng thái (REJECTED, EXPIRED…).</td></tr>
+<tr><td><span class="m del">DELETE</span><code>/supplier-quotations/:id</code></td><td>Chỉ phiếu DRAFT.</td></tr>
+<tr><td><span class="m get">GET</span><code>/price-reference?product_id=&amp;port_id=</code></td><td>Đọc <code>v_supplier_quote_comparison</code> (bảng giá tham khảo theo tấn).</td></tr>
+</tbody></table></div>
+
+<div class="codebox">
+<div class="bar"><span>Ví dụ: POST /api/v1/customer-requests</span><button class="copy" type="button" data-target="ex-cr">Sao chép</button></div>
+<pre id="ex-cr">{
+  "customer_id": 1,
+  "request_date": "2026-09-07",
+  "quote_deadline": "2026-09-17",
+  "items": [
+    { "product_id": 1, "port_id": 1, "bag_weight_kg": 10,  "quantity_kg": 60000 },
+    { "product_id": 4, "port_id": 2, "bag_weight_kg": 9.5, "quantity_kg": 13300 }
+  ]
+}</pre></div>
+<div class="codebox">
+<div class="bar"><span>Ví dụ: POST /api/v1/supplier-quotations</span><button class="copy" type="button" data-target="ex-req">Sao chép</button></div>
+<pre id="ex-req">{
+  "supplier_id": 1,
+  "quote_date": "2026-09-09",
+  "valid_until": null,
+  "port_id": 1,
+  "exchange_rate": 26170,
+  "note": null,
+  "items": [
+    {
+      "request_item_id": 1,
+      "product_id": 1,
+      "bag_weight_kg": 10,
+      "bag_count": 6000,
+      "unit_price_usd_per_kg": 0.3648,
+      "fee_overrides": { "LOGISTICS": 600000 }
+    }
+  ]
+}</pre></div>
+<div class="codebox">
+<div class="bar"><span>Response 201</span><button class="copy" type="button" data-target="ex-res">Sao chép</button></div>
+<pre id="ex-res">{
+  "id": 1,
+  "quote_no": "BGNCC-2026-0001",
+  "status": "ACTIVE",
+  "supplier": { "id": 1, "name": "Thiên Tân" },
+  "port": { "id": 1, "code": "HCM", "name": "HCM (Cát Lái)" },
+  "exchange_rate": 26170,
+  "items": [
+    {
+      "id": 1, "line_no": 1, "request_item_id": 1,
+      "product": { "id": 1, "name": "Hành lai", "spec": "25-32" },
+      "bag_weight_kg": 10, "bag_count": 6000, "quantity_kg": 60000,
+      "unit_price_usd_per_kg": 0.3648,
+      "fees": [
+        { "code": "LCC", "amount_vnd_per_ton": 500000 },
+        { "code": "LOGISTICS", "amount_vnd_per_ton": 600000 },
+        { "code": "SALES", "amount_vnd_per_ton": 200000 },
+        { "code": "OPS", "amount_vnd_per_ton": 15000 },
+        { "code": "BANK", "amount_vnd_per_ton": 1000 },
+        { "code": "DOC", "amount_vnd_per_ton": 56000 }
+      ],
+      "cost_vnd_per_ton": 9546816,
+      "fees_total_vnd_per_ton": 1372000,
+      "landed_cost_vnd_per_ton": 10918816,
+      "vat_rate": 0.05,
+      "amount_before_vat": 655128960,
+      "vat_amount": 32756448,
+      "amount_after_vat": 687885408
+    }
+  ],
+  "warnings": []
+}</pre></div>
+<div class="codebox">
+<div class="bar"><span>Lỗi 422 (đơn giá sai đơn vị)</span></div>
+<pre>{
+  "error": "VALIDATION_ERROR",
+  "fields": {
+    "items[0].unit_price_usd_per_kg": "Đơn giá 2450 USD/kg quá cao — có vẻ đang tính theo USD/tấn. Gợi ý: 2.45"
+  }
+}</pre></div>
+</section>
+
+
+<section id="ai">
+<h2><span class="no">9</span>Hướng dẫn cho AI</h2>
+<p>Dán đoạn dưới đây cùng với file HTML này vào AI để sinh code.</p>
+<div class="codebox">
+<div class="bar"><span>Prompt</span><button class="copy" type="button" data-target="ai-prompt">Sao chép</button></div>
+<pre id="ai-prompt">Bạn là lập trình viên backend. Hãy xây GIAI ĐOẠN 1 của hệ thống báo giá nông sản nhập khẩu theo đúng tài liệu backend HTML đính kèm. Không làm phần đơn hàng, PO, thanh toán.
+
+Quy trình: khách gửi yêu cầu (mặt hàng, cảng đến, quy cách bao, số lượng) -> nhập báo giá của nhiều NCC cho từng dòng yêu cầu -> backend chụp phí theo cảng và phí cố định, tính giá vốn, thành tiền/tấn, VAT -> so sánh tổng sau VAT theo số lượng khách cần -> chọn NCC tối ưu -> xuất giá gửi khách.
+
+Yêu cầu:
+1. Database PostgreSQL 15+: chạy nguyên văn khối "schema.sql" ở mục 11 (không đổi tên bảng/cột), sau đó "seed.sql".
+2. Backend REST /api/v1 với các endpoint ở mục 8. Tên trường JSON = tên cột snake_case.
+3. Mọi cột ghi chú "Backend tính" phải tính ở server theo công thức mục 5; bỏ qua giá trị client gửi. Có thể gọi các hàm SQL fn_snapshot_default_fees, fn_recalc_supplier_item và đọc các view v_request_quote_comparison, v_request_customer_quote.
+4. Áp dụng toàn bộ quy tắc mục 7 (bắt đầu từ yêu cầu khách, so sánh theo số lượng khách cần, điều kiện được gợi ý, không ghi đè báo giá, snapshot phí, kiểm tra đơn giá ≤ 20 USD/kg, tỷ giá 10.000–50.000, đánh số YC-/BGNCC- theo năm, luồng trạng thái, phân quyền).
+5. Mỗi thao tác ghi nhiều bảng chạy trong 1 transaction.
+6. Viết test tự động với dữ liệu seed:
+   - Báo giá Thiên Tân - Hành lai 25-32 (10 kg × 6.000 bao, 0.3648 USD/kg, tỷ giá 26.170, cảng HCM): landed_cost_vnd_per_ton = 10.918.816, amount_after_vat = 687.885.408.
+   - Yêu cầu YC-2026-0001 dòng 2 (S17 Stem best, HP, 13.300 kg): AKP req_amount_after_vat = 918.708.473 (is_best), Sivaram SHT = 945.102.323, diff_amount = 26.393.850, diff_pct = 2.87.
+   - Dòng 1: phương án bao 30 kg của Thiên Tân có eligible = false (sai quy cách, thiếu số lượng) dù rẻ hơn.
+7. Sửa file HTML hiện có theo bảng ánh xạ mục 6: thêm khối "Yêu cầu khách"; thêm ô chọn dòng yêu cầu khi nhập báo giá; thay mảng portsList/quotationList bằng gọi API; ô Nhà cung cấp và Sản phẩm thành ô chọn; bảng so sánh nhóm theo dòng yêu cầu, có nút "Chọn NCC"; thay alert() bằng thông báo trên trang.
+
+Đơn vị: đơn giá USD/KG; phí, giá vốn VNĐ/TẤN; khối lượng KG; tiền VNĐ làm tròn đến đồng.</pre></div>
+</section>
+
+<section id="sql">
+<h2><span class="no">10</span>SQL đầy đủ</h2>
+<p class="muted">Đã chạy thử trên PostgreSQL 16: tạo bảng, nạp dữ liệu Excel + yêu cầu mẫu, so sánh và chọn NCC đều cho kết quả như mục 5.</p>
+<div class="codebox">
+<div class="bar"><span>schema.sql — bảng, chỉ mục, hàm, view</span><button class="copy" type="button" data-target="sql-schema">Sao chép</button></div>
+<pre id="sql-schema">-- =====================================================================
+-- HỆ THỐNG BÁO GIÁ NÔNG SẢN NHẬP KHẨU — GIAI ĐOẠN 1 — SCHEMA PostgreSQL 15+
+-- Quy ước: tiền VNĐ, khối lượng KG, đơn giá NCC USD/KG, phí VNĐ/TẤN.
+-- Quy trình: Khách gửi yêu cầu (mặt hàng, cảng, quy cách, số lượng)
+--   -&gt; lấy báo giá nhiều NCC cho từng dòng yêu cầu -&gt; tính giá vốn, phụ phí, VAT
+--   -&gt; so sánh tổng sau VAT theo số lượng khách cần -&gt; chọn NCC tối ưu gửi khách
+-- (Giai đoạn 2: đơn hàng, PO, thanh toán — chưa nằm trong file này)
+-- =====================================================================
+
+-- ---------- 0. NGƯỜI DÙNG ----------
+CREATE TABLE users (
+  id            BIGSERIAL PRIMARY KEY,
+  full_name     VARCHAR(150) NOT NULL,
+  email         VARCHAR(150) NOT NULL UNIQUE,
+  role          VARCHAR(20)  NOT NULL DEFAULT &#x27;STAFF&#x27;
+                CHECK (role IN (&#x27;ADMIN&#x27;,&#x27;PURCHASING&#x27;,&#x27;SALES&#x27;,&#x27;STAFF&#x27;)),
+  is_active     BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- ---------- 1. DANH MỤC (MASTER DATA) ----------
+CREATE TABLE ports (
+  id            BIGSERIAL PRIMARY KEY,
+  code          VARCHAR(10)  NOT NULL UNIQUE,          -- HCM, HP (mã nội bộ, khớp Excel)
+  un_locode     VARCHAR(5),                            -- VNSGN, VNHPH
+  name          VARCHAR(100) NOT NULL,                 -- HCM (Cát Lái)
+  is_active     BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE fee_types (
+  id               SMALLSERIAL PRIMARY KEY,
+  code             VARCHAR(20)  NOT NULL UNIQUE,       -- LCC, LOGISTICS, SALES, OPS, BANK, DOC
+  name             VARCHAR(100) NOT NULL,
+  is_port_specific BOOLEAN NOT NULL DEFAULT FALSE,     -- TRUE: mức phí khác nhau theo cảng (LCC)
+  sort_order       SMALLINT NOT NULL DEFAULT 0,
+  is_active        BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+-- Định mức phí có hiệu lực theo thời gian. port_id NULL = áp dụng cho mọi cảng.
+CREATE TABLE fee_rates (
+  id                  BIGSERIAL PRIMARY KEY,
+  fee_type_id         SMALLINT NOT NULL REFERENCES fee_types(id),
+  port_id             BIGINT REFERENCES ports(id),
+  amount_vnd_per_ton  NUMERIC(14,2) NOT NULL CHECK (amount_vnd_per_ton &gt;= 0),
+  effective_from      DATE NOT NULL,
+  effective_to        DATE,                            -- NULL = còn hiệu lực
+  created_by          BIGINT REFERENCES users(id),
+  created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CONSTRAINT uq_fee_rate UNIQUE NULLS NOT DISTINCT (fee_type_id, port_id, effective_from),
+  CONSTRAINT ck_fee_rate_dates CHECK (effective_to IS NULL OR effective_to &gt;= effective_from)
+);
+
+CREATE TABLE suppliers (
+  id             BIGSERIAL PRIMARY KEY,
+  code           VARCHAR(20)  NOT NULL UNIQUE,
+  name           VARCHAR(200) NOT NULL,
+  country        VARCHAR(60),
+  contact_name   VARCHAR(100),
+  phone          VARCHAR(30),
+  email          VARCHAR(150),
+  payment_terms  VARCHAR(100),                         -- VD: TT 30% trước, 70% khi có B/L
+  is_active      BOOLEAN NOT NULL DEFAULT TRUE,
+  note           TEXT,
+  created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at     TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE products (
+  id                     BIGSERIAL PRIMARY KEY,
+  code                   VARCHAR(30)  NOT NULL UNIQUE,
+  name                   VARCHAR(150) NOT NULL,        -- Hành lai
+  spec                   VARCHAR(100),                 -- 25-32 (cỡ/quy cách); NULL nếu không có
+  hs_code                VARCHAR(12),
+  default_bag_weight_kg  NUMERIC(10,3),
+  vat_rate               NUMERIC(5,4) NOT NULL DEFAULT 0.05 CHECK (vat_rate BETWEEN 0 AND 1),
+  is_active              BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at             TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at             TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CONSTRAINT uq_product_name_spec UNIQUE NULLS NOT DISTINCT (name, spec)
+);
+
+CREATE TABLE exchange_rates (
+  id          BIGSERIAL PRIMARY KEY,
+  rate_date   DATE NOT NULL,
+  currency    CHAR(3) NOT NULL DEFAULT &#x27;USD&#x27;,
+  rate_vnd    NUMERIC(12,2) NOT NULL CHECK (rate_vnd &gt; 0),
+  source      VARCHAR(30) NOT NULL DEFAULT &#x27;VCB&#x27;,
+  CONSTRAINT uq_exchange_rate UNIQUE (rate_date, currency, source)
+);
+
+-- ---------- 2. KHÁCH HÀNG &amp; YÊU CẦU BÁO GIÁ (bắt đầu quy trình) ----------
+CREATE TABLE customers (
+  id               BIGSERIAL PRIMARY KEY,
+  code             VARCHAR(20)  NOT NULL UNIQUE,
+  name             VARCHAR(200) NOT NULL,
+  tax_code         VARCHAR(20),
+  address          TEXT,
+  contact_name     VARCHAR(100),
+  phone            VARCHAR(30),
+  email            VARCHAR(150),
+  default_port_id  BIGINT REFERENCES ports(id),
+  payment_terms    VARCHAR(100),
+  is_active        BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at       TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Yêu cầu báo giá của khách = ĐIỂM BẮT ĐẦU của quy trình
+CREATE TABLE customer_requests (
+  id             BIGSERIAL PRIMARY KEY,
+  request_no     VARCHAR(30) NOT NULL UNIQUE,         -- YC-2026-0001
+  customer_id    BIGINT NOT NULL REFERENCES customers(id),
+  request_date   DATE NOT NULL,
+  quote_deadline DATE,                                -- hạn phải gửi báo giá cho khách
+  status         VARCHAR(12) NOT NULL DEFAULT &#x27;NEW&#x27;
+                 CHECK (status IN (&#x27;NEW&#x27;,&#x27;SOURCING&#x27;,&#x27;QUOTED&#x27;,&#x27;CANCELLED&#x27;)),
+  note           TEXT,
+  created_by     BIGINT REFERENCES users(id),
+  created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at     TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Mỗi dòng: mặt hàng + cảng đến + quy cách + số lượng khách cần
+CREATE TABLE customer_request_items (
+  id                         BIGSERIAL PRIMARY KEY,
+  request_id                 BIGINT NOT NULL REFERENCES customer_requests(id) ON DELETE CASCADE,
+  line_no                    SMALLINT NOT NULL,
+  product_id                 BIGINT NOT NULL REFERENCES products(id),          -- mặt hàng (tên + cỡ)
+  port_id                    BIGINT NOT NULL REFERENCES ports(id),             -- cảng đến
+  bag_weight_kg              NUMERIC(10,3) NOT NULL CHECK (bag_weight_kg &gt; 0), -- quy cách đóng bao
+  quantity_kg                NUMERIC(14,3) NOT NULL CHECK (quantity_kg &gt; 0),   -- số lượng khách cần
+  required_delivery_date     DATE,
+  selected_supplier_item_id  BIGINT,                  -- NCC được chọn (FK thêm sau khi tạo bảng NCC)
+  note                       TEXT,
+  CONSTRAINT uq_cr_item_line UNIQUE (request_id, line_no)
+);
+
+-- ---------- 3. BÁO GIÁ NHÀ CUNG CẤP (theo từng dòng yêu cầu) ----------
+CREATE TABLE supplier_quotations (
+  id             BIGSERIAL PRIMARY KEY,
+  quote_no       VARCHAR(30) NOT NULL UNIQUE,          -- BGNCC-2026-0001
+  supplier_id    BIGINT NOT NULL REFERENCES suppliers(id),
+  quote_date     DATE   NOT NULL,
+  valid_until    DATE,
+  port_id        BIGINT NOT NULL REFERENCES ports(id), -- cảng đến
+  currency       CHAR(3) NOT NULL DEFAULT &#x27;USD&#x27;,
+  exchange_rate  NUMERIC(12,2) NOT NULL CHECK (exchange_rate BETWEEN 10000 AND 50000),
+  status         VARCHAR(12) NOT NULL DEFAULT &#x27;ACTIVE&#x27;
+                 CHECK (status IN (&#x27;DRAFT&#x27;,&#x27;ACTIVE&#x27;,&#x27;SELECTED&#x27;,&#x27;REJECTED&#x27;,&#x27;EXPIRED&#x27;,&#x27;SUPERSEDED&#x27;)),
+  supersedes_id  BIGINT REFERENCES supplier_quotations(id), -- báo giá sửa lại của báo giá nào
+  note           TEXT,
+  created_by     BIGINT REFERENCES users(id),
+  created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at     TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE supplier_quotation_items (
+  id                        BIGSERIAL PRIMARY KEY,
+  quotation_id              BIGINT NOT NULL REFERENCES supplier_quotations(id) ON DELETE CASCADE,
+  line_no                   SMALLINT NOT NULL,
+  request_item_id           BIGINT REFERENCES customer_request_items(id), -- báo cho dòng yêu cầu nào; NULL = báo giá tham khảo
+  product_id                BIGINT NOT NULL REFERENCES products(id),
+  bag_weight_kg             NUMERIC(10,3) NOT NULL CHECK (bag_weight_kg &gt; 0),
+  bag_count                 INTEGER       NOT NULL CHECK (bag_count &gt; 0),       -- số bao NCC chào
+  quantity_kg               NUMERIC(14,3) GENERATED ALWAYS AS (bag_weight_kg * bag_count) STORED,
+  unit_price_usd_per_kg     NUMERIC(12,6) NOT NULL CHECK (unit_price_usd_per_kg &gt; 0 AND unit_price_usd_per_kg &lt;= 20),
+  -- Các cột tính toán: backend (hoặc fn_recalc_supplier_item) ghi, frontend KHÔNG gửi lên
+  cost_vnd_per_ton          NUMERIC(16,2),
+  fees_total_vnd_per_ton    NUMERIC(16,2),
+  landed_cost_vnd_per_ton   NUMERIC(16,2),
+  vat_rate                  NUMERIC(5,4) NOT NULL DEFAULT 0.05,
+  amount_before_vat         NUMERIC(18,0),
+  vat_amount                NUMERIC(18,0),
+  amount_after_vat          NUMERIC(18,0),
+  note                      TEXT,
+  CONSTRAINT uq_sq_item_line UNIQUE (quotation_id, line_no)
+);
+
+-- Ảnh chụp (snapshot) phí áp dụng cho từng dòng =&gt; đổi định mức sau này không làm sai báo giá cũ
+CREATE TABLE supplier_quotation_item_fees (
+  id                  BIGSERIAL PRIMARY KEY,
+  item_id             BIGINT   NOT NULL REFERENCES supplier_quotation_items(id) ON DELETE CASCADE,
+  fee_type_id         SMALLINT NOT NULL REFERENCES fee_types(id),
+  amount_vnd_per_ton  NUMERIC(14,2) NOT NULL CHECK (amount_vnd_per_ton &gt;= 0),
+  CONSTRAINT uq_item_fee UNIQUE (item_id, fee_type_id)
+);
+
+ALTER TABLE customer_request_items
+  ADD CONSTRAINT fk_cr_item_selected FOREIGN KEY (selected_supplier_item_id) REFERENCES supplier_quotation_items(id);
+
+-- ---------- 4. CHỈ MỤC ----------
+CREATE INDEX ix_sq_items_request ON supplier_quotation_items (request_item_id);
+CREATE INDEX ix_cr_customer ON customer_requests (customer_id, request_date DESC);
+CREATE INDEX ix_sq_supplier_date ON supplier_quotations (supplier_id, quote_date DESC);
+CREATE INDEX ix_sq_items_product ON supplier_quotation_items (product_id);
+CREATE INDEX ix_fee_rates_lookup ON fee_rates (fee_type_id, port_id, effective_from DESC);
+
+-- ---------- 5. HÀM NGHIỆP VỤ ----------
+-- 5.1 Định mức phí áp dụng cho 1 cảng tại 1 ngày (ưu tiên mức riêng của cảng, sau đó mức chung)
+CREATE FUNCTION fn_fee_rates_for(p_port_id BIGINT, p_date DATE)
+RETURNS TABLE (fee_type_id SMALLINT, fee_code VARCHAR, amount_vnd_per_ton NUMERIC)
+LANGUAGE sql STABLE AS $$
+  SELECT ft.id, ft.code, r.amount_vnd_per_ton
+  FROM fee_types ft
+  CROSS JOIN LATERAL (
+    SELECT fr.amount_vnd_per_ton
+    FROM fee_rates fr
+    WHERE fr.fee_type_id = ft.id
+      AND (fr.port_id = p_port_id OR fr.port_id IS NULL)
+      AND fr.effective_from &lt;= p_date
+      AND (fr.effective_to IS NULL OR fr.effective_to &gt;= p_date)
+    ORDER BY (fr.port_id IS NULL), fr.effective_from DESC
+    LIMIT 1
+  ) r
+  WHERE ft.is_active
+  ORDER BY ft.sort_order;
+$$;
+
+-- 5.2 Tính lại 1 dòng báo giá NCC (công thức giống hệt HTML/Excel)
+CREATE FUNCTION fn_recalc_supplier_item(p_item_id BIGINT)
+RETURNS VOID LANGUAGE plpgsql AS $$
+DECLARE
+  v_rate NUMERIC; v_fees NUMERIC;
+BEGIN
+  SELECT q.exchange_rate INTO v_rate
+  FROM supplier_quotation_items i JOIN supplier_quotations q ON q.id = i.quotation_id
+  WHERE i.id = p_item_id;
+
+  SELECT COALESCE(SUM(amount_vnd_per_ton), 0) INTO v_fees
+  FROM supplier_quotation_item_fees WHERE item_id = p_item_id;
+
+  UPDATE supplier_quotation_items i SET
+    cost_vnd_per_ton        = i.unit_price_usd_per_kg * v_rate * 1000,
+    fees_total_vnd_per_ton  = v_fees,
+    landed_cost_vnd_per_ton = i.unit_price_usd_per_kg * v_rate * 1000 + v_fees,
+    amount_before_vat       = ROUND((i.unit_price_usd_per_kg * v_rate * 1000 + v_fees) * i.quantity_kg / 1000),
+    vat_amount              = ROUND(ROUND((i.unit_price_usd_per_kg * v_rate * 1000 + v_fees) * i.quantity_kg / 1000) * i.vat_rate),
+    amount_after_vat        = ROUND((i.unit_price_usd_per_kg * v_rate * 1000 + v_fees) * i.quantity_kg / 1000)
+                            + ROUND(ROUND((i.unit_price_usd_per_kg * v_rate * 1000 + v_fees) * i.quantity_kg / 1000) * i.vat_rate)
+  WHERE i.id = p_item_id;
+END $$;
+
+-- 5.3 Chụp phí mặc định vào 1 dòng (gọi khi tạo dòng mới; người dùng có thể sửa sau)
+CREATE FUNCTION fn_snapshot_default_fees(p_item_id BIGINT)
+RETURNS VOID LANGUAGE plpgsql AS $$
+DECLARE v_port BIGINT; v_date DATE;
+BEGIN
+  SELECT q.port_id, q.quote_date INTO v_port, v_date
+  FROM supplier_quotation_items i JOIN supplier_quotations q ON q.id = i.quotation_id
+  WHERE i.id = p_item_id;
+
+  INSERT INTO supplier_quotation_item_fees (item_id, fee_type_id, amount_vnd_per_ton)
+  SELECT p_item_id, f.fee_type_id, f.amount_vnd_per_ton FROM fn_fee_rates_for(v_port, v_date) f
+  ON CONFLICT (item_id, fee_type_id) DO NOTHING;
+
+  PERFORM fn_recalc_supplier_item(p_item_id);
+END $$;
+
+-- ---------- 6. VIEW SO SÁNH ----------
+-- 7.1 SO SÁNH CHÍNH: theo từng dòng yêu cầu của khách, tính lại tổng tiền theo ĐÚNG SỐ LƯỢNG KHÁCH CẦN
+--     =&gt; mọi NCC cùng số lượng, so tổng sau VAT là công bằng.
+CREATE VIEW v_request_quote_comparison AS
+WITH latest AS (
+  SELECT DISTINCT ON (i.request_item_id, q.supplier_id, i.bag_weight_kg)
+    ri.request_id, r.request_no, i.request_item_id, ri.line_no AS request_line_no,
+    c.name AS customer_name,
+    ri.product_id, TRIM(p.name || &#x27; &#x27; || COALESCE(p.spec, &#x27;&#x27;)) AS product_name,
+    ri.port_id, pt.code AS port_code,
+    ri.bag_weight_kg AS requested_bag_weight_kg, ri.quantity_kg AS requested_quantity_kg,
+    i.id AS supplier_item_id, q.id AS quotation_id, q.quote_no, q.quote_date,
+    q.supplier_id, s.name AS supplier_name,
+    i.bag_weight_kg AS offered_bag_weight_kg, i.quantity_kg AS offered_quantity_kg,
+    i.unit_price_usd_per_kg, q.exchange_rate,
+    i.cost_vnd_per_ton, i.fees_total_vnd_per_ton, i.landed_cost_vnd_per_ton, i.vat_rate,
+    (i.bag_weight_kg = ri.bag_weight_kg) AS spec_match,             -- đúng quy cách bao
+    (i.quantity_kg &gt;= ri.quantity_kg)    AS quantity_enough,        -- NCC chào đủ số lượng
+    (q.port_id = ri.port_id)             AS port_match,
+    COALESCE(ri.selected_supplier_item_id = i.id, FALSE) AS is_selected
+  FROM supplier_quotation_items i
+  JOIN supplier_quotations q      ON q.id = i.quotation_id
+  JOIN customer_request_items ri  ON ri.id = i.request_item_id
+  JOIN customer_requests r        ON r.id = ri.request_id
+  JOIN customers c                ON c.id = r.customer_id
+  JOIN suppliers s                ON s.id = q.supplier_id
+  JOIN products p                 ON p.id = ri.product_id
+  JOIN ports pt                   ON pt.id = ri.port_id
+  WHERE q.status IN (&#x27;ACTIVE&#x27;,&#x27;SELECTED&#x27;)
+    AND (q.valid_until IS NULL OR q.valid_until &gt;= CURRENT_DATE)
+  ORDER BY i.request_item_id, q.supplier_id, i.bag_weight_kg, q.quote_date DESC, q.id DESC, i.id DESC
+), priced AS (
+  SELECT l.*,
+    (l.spec_match AND l.quantity_enough AND l.port_match) AS eligible,
+    ROUND(l.landed_cost_vnd_per_ton * l.requested_quantity_kg / 1000) AS req_amount_before_vat,
+    ROUND(ROUND(l.landed_cost_vnd_per_ton * l.requested_quantity_kg / 1000) * l.vat_rate) AS req_vat_amount
+  FROM latest l
+), totals AS (
+  SELECT p.*, p.req_amount_before_vat + p.req_vat_amount AS req_amount_after_vat FROM priced p
+)
+SELECT t.*,
+  RANK() OVER w AS price_rank,
+  MIN(t.req_amount_after_vat) FILTER (WHERE t.eligible) OVER (PARTITION BY t.request_item_id) AS best_amount_after_vat,
+  t.req_amount_after_vat
+    - MIN(t.req_amount_after_vat) FILTER (WHERE t.eligible) OVER (PARTITION BY t.request_item_id) AS diff_amount,
+  ROUND((t.req_amount_after_vat::numeric
+    / NULLIF(MIN(t.req_amount_after_vat) FILTER (WHERE t.eligible) OVER (PARTITION BY t.request_item_id), 0) - 1) * 100, 2) AS diff_pct,
+  (t.eligible AND RANK() OVER w = 1) AS is_best
+FROM totals t
+WINDOW w AS (PARTITION BY t.request_item_id ORDER BY (NOT t.eligible), t.req_amount_after_vat);
+
+-- 7.2 BẢNG GIÁ THAM KHẢO theo tấn (mọi báo giá, kể cả không gắn yêu cầu)
+-- Lấy báo giá MỚI NHẤT của mỗi NCC cho từng (sản phẩm, cảng, quy cách bao), xếp hạng TRONG CÙNG SẢN PHẨM.
+CREATE VIEW v_supplier_quote_comparison AS
+WITH latest AS (
+  SELECT DISTINCT ON (q.supplier_id, i.product_id, q.port_id, i.bag_weight_kg)
+    i.id AS item_id, q.id AS quotation_id, q.quote_no, q.quote_date, q.valid_until, q.status,
+    q.supplier_id, s.name AS supplier_name,
+    i.product_id, TRIM(p.name || &#x27; &#x27; || COALESCE(p.spec, &#x27;&#x27;)) AS product_name,
+    q.port_id, pt.code AS port_code, pt.name AS port_name,
+    i.bag_weight_kg, i.bag_count, i.quantity_kg,
+    i.unit_price_usd_per_kg, q.exchange_rate,
+    i.cost_vnd_per_ton, i.fees_total_vnd_per_ton, i.landed_cost_vnd_per_ton,
+    i.amount_before_vat, i.vat_amount, i.amount_after_vat
+  FROM supplier_quotation_items i
+  JOIN supplier_quotations q ON q.id = i.quotation_id
+  JOIN suppliers s  ON s.id = q.supplier_id
+  JOIN products  p  ON p.id = i.product_id
+  JOIN ports     pt ON pt.id = q.port_id
+  WHERE q.status IN (&#x27;ACTIVE&#x27;,&#x27;SELECTED&#x27;)
+    AND (q.valid_until IS NULL OR q.valid_until &gt;= CURRENT_DATE)
+  ORDER BY q.supplier_id, i.product_id, q.port_id, i.bag_weight_kg, q.quote_date DESC, q.id DESC, i.id DESC
+)
+SELECT l.*,
+  RANK() OVER w AS price_rank,
+  MIN(l.landed_cost_vnd_per_ton) OVER (PARTITION BY l.product_id) AS best_landed_cost_vnd_per_ton,
+  ROUND((l.landed_cost_vnd_per_ton / MIN(l.landed_cost_vnd_per_ton) OVER (PARTITION BY l.product_id) - 1) * 100, 2) AS diff_pct,
+  (RANK() OVER w = 1) AS is_best
+FROM latest l
+WINDOW w AS (PARTITION BY l.product_id ORDER BY l.landed_cost_vnd_per_ton);
+
+-- 6.3 BÁO GIÁ GỬI KHÁCH: mỗi dòng yêu cầu + NCC đã chọn + giá theo số lượng khách cần
+CREATE VIEW v_request_customer_quote AS
+SELECT r.request_no, r.request_date, r.status AS request_status, c.name AS customer_name,
+       ri.id AS request_item_id, ri.line_no,
+       TRIM(p.name || &#x27; &#x27; || COALESCE(p.spec, &#x27;&#x27;)) AS product_name,
+       pt.code AS port_code, ri.bag_weight_kg, ri.quantity_kg,
+       v.supplier_name, v.quote_no AS supplier_quote_no,
+       v.landed_cost_vnd_per_ton AS price_vnd_per_ton,
+       v.req_amount_before_vat AS amount_before_vat,
+       v.req_vat_amount AS vat_amount,
+       v.req_amount_after_vat AS amount_after_vat
+FROM customer_request_items ri
+JOIN customer_requests r ON r.id = ri.request_id
+JOIN customers c ON c.id = r.customer_id
+JOIN products p ON p.id = ri.product_id
+JOIN ports pt ON pt.id = ri.port_id
+LEFT JOIN v_request_quote_comparison v
+       ON v.request_item_id = ri.id AND v.supplier_item_id = ri.selected_supplier_item_id;
+</pre></div>
+<div class="codebox">
+<div class="bar"><span>seed.sql — dữ liệu từ file Excel + yêu cầu khách mẫu</span><button class="copy" type="button" data-target="sql-seed">Sao chép</button></div>
+<pre id="sql-seed">-- =====================================================================
+-- DỮ LIỆU MẪU — lấy từ file Excel hiện tại (đã chuẩn hóa)
+-- AKP &amp; Sivaram 13/09: Excel ghi 2450 / 2350 (USD/tấn) -&gt; đổi thành 2.45 / 2.35 USD/kg
+-- =====================================================================
+INSERT INTO users (full_name, email, role) VALUES (&#x27;Quản trị&#x27;, &#x27;admin@example.com&#x27;, &#x27;ADMIN&#x27;);
+
+INSERT INTO ports (code, un_locode, name) VALUES
+  (&#x27;HCM&#x27;, &#x27;VNSGN&#x27;, &#x27;HCM (Cát Lái)&#x27;),
+  (&#x27;HP&#x27;,  &#x27;VNHPH&#x27;, &#x27;Hải Phòng&#x27;);
+
+INSERT INTO fee_types (code, name, is_port_specific, sort_order) VALUES
+  (&#x27;LCC&#x27;,       &#x27;Phí LCC (theo cảng)&#x27;,      TRUE,  1),
+  (&#x27;LOGISTICS&#x27;, &#x27;Chi phí logistics&#x27;,        FALSE, 2),
+  (&#x27;SALES&#x27;,     &#x27;Chi phí bán hàng&#x27;,         FALSE, 3),
+  (&#x27;OPS&#x27;,       &#x27;Chi phí Ops&#x27;,              FALSE, 4),
+  (&#x27;BANK&#x27;,      &#x27;Phí chuyển tiền&#x27;,          FALSE, 5),
+  (&#x27;DOC&#x27;,       &#x27;Phí chứng từ - hải quan&#x27;,  FALSE, 6);
+
+INSERT INTO fee_rates (fee_type_id, port_id, amount_vnd_per_ton, effective_from)
+SELECT ft.id, p.id, v.amount, DATE &#x27;2026-01-01&#x27;
+FROM (VALUES (&#x27;LCC&#x27;,&#x27;HCM&#x27;,500000), (&#x27;LCC&#x27;,&#x27;HP&#x27;,700000),
+             (&#x27;LOGISTICS&#x27;,NULL,600000), (&#x27;SALES&#x27;,NULL,200000), (&#x27;OPS&#x27;,NULL,15000),
+             (&#x27;BANK&#x27;,NULL,1000), (&#x27;DOC&#x27;,NULL,56000)) v(fee, port, amount)
+JOIN fee_types ft ON ft.code = v.fee
+LEFT JOIN ports p ON p.code = v.port;
+
+INSERT INTO suppliers (code, name, country) VALUES
+  (&#x27;THIENTAN&#x27;, &#x27;Thiên Tân&#x27;,   &#x27;Trung Quốc&#x27;),
+  (&#x27;AKP&#x27;,      &#x27;AKP&#x27;,         &#x27;Ấn Độ&#x27;),
+  (&#x27;SIVARAM&#x27;,  &#x27;Sivaram SHT&#x27;, &#x27;Ấn Độ&#x27;),
+  (&#x27;REDIMPEX&#x27;, &#x27;Red Impex&#x27;,   &#x27;Ấn Độ&#x27;);
+
+INSERT INTO products (code, name, spec, default_bag_weight_kg, vat_rate) VALUES
+  (&#x27;HL-2532&#x27;,    &#x27;Hành lai&#x27;,         &#x27;25-32&#x27;,       10,  0.05),
+  (&#x27;HL-3550&#x27;,    &#x27;Hành lai&#x27;,         &#x27;35-50&#x27;,       10,  0.05),
+  (&#x27;CAROT&#x27;,      &#x27;Cà rốt&#x27;,           NULL,          10,  0.05),
+  (&#x27;S17-BEST&#x27;,   &#x27;S17 Stem&#x27;,         &#x27;best&#x27;,        9.5, 0.05),
+  (&#x27;S17-MED&#x27;,    &#x27;S17 Stem&#x27;,         &#x27;medium best&#x27;, 9.5, 0.05),
+  (&#x27;HANH-BELL&#x27;,  &#x27;Hành Bellary&#x27;,     NULL,          10,  0.05);
+
+-- Header báo giá NCC
+INSERT INTO supplier_quotations (quote_no, supplier_id, quote_date, port_id, exchange_rate, status, note)
+SELECT v.no, s.id, v.d::date, p.id, v.rate, v.status, v.note
+FROM (VALUES
+  (&#x27;BGNCC-2026-0001&#x27;,&#x27;THIENTAN&#x27;,&#x27;2026-09-09&#x27;,&#x27;HCM&#x27;,26170,&#x27;ACTIVE&#x27;,NULL),
+  (&#x27;BGNCC-2026-0002&#x27;,&#x27;THIENTAN&#x27;,&#x27;2026-09-08&#x27;,&#x27;HCM&#x27;,26200,&#x27;SUPERSEDED&#x27;,&#x27;Cà rốt giá 0.238 — bị thay bằng 0002B&#x27;),
+  (&#x27;BGNCC-2026-0003&#x27;,&#x27;THIENTAN&#x27;,&#x27;2026-09-08&#x27;,&#x27;HCM&#x27;,26200,&#x27;ACTIVE&#x27;,&#x27;Báo lại cà rốt cùng ngày: 0.26438 (cần xác nhận)&#x27;),
+  (&#x27;BGNCC-2026-0004&#x27;,&#x27;AKP&#x27;,     &#x27;2026-09-13&#x27;,&#x27;HP&#x27;, 26210,&#x27;ACTIVE&#x27;,&#x27;Excel ghi 2450 USD/tấn -&gt; 2.45 USD/kg&#x27;),
+  (&#x27;BGNCC-2026-0005&#x27;,&#x27;SIVARAM&#x27;, &#x27;2026-09-13&#x27;,&#x27;HP&#x27;, 26180,&#x27;ACTIVE&#x27;,&#x27;Excel ghi 2350 USD/tấn -&gt; 2.35 USD/kg&#x27;),
+  (&#x27;BGNCC-2026-0006&#x27;,&#x27;SIVARAM&#x27;, &#x27;2026-09-16&#x27;,&#x27;HP&#x27;, 26180,&#x27;ACTIVE&#x27;,NULL),
+  (&#x27;BGNCC-2026-0007&#x27;,&#x27;REDIMPEX&#x27;,&#x27;2026-09-16&#x27;,&#x27;HCM&#x27;,26180,&#x27;ACTIVE&#x27;,NULL)
+) v(no, sup, d, port, rate, status, note)
+JOIN suppliers s ON s.code = v.sup
+JOIN ports p ON p.code = v.port;
+
+UPDATE supplier_quotations SET supersedes_id = (SELECT id FROM supplier_quotations WHERE quote_no=&#x27;BGNCC-2026-0002&#x27;)
+WHERE quote_no = &#x27;BGNCC-2026-0003&#x27;;
+
+-- Dòng báo giá
+INSERT INTO supplier_quotation_items (quotation_id, line_no, product_id, bag_weight_kg, bag_count, unit_price_usd_per_kg, vat_rate)
+SELECT q.id, v.line, p.id, v.bag_kg, v.bags, v.price, p.vat_rate
+FROM (VALUES
+  (&#x27;BGNCC-2026-0001&#x27;,1,&#x27;HL-2532&#x27;,  10,  6000, 0.3648),
+  (&#x27;BGNCC-2026-0001&#x27;,2,&#x27;HL-3550&#x27;,  10,  3000, 0.509),
+  (&#x27;BGNCC-2026-0001&#x27;,3,&#x27;HL-2532&#x27;,  30,  1000, 0.3576),
+  (&#x27;BGNCC-2026-0001&#x27;,4,&#x27;HL-3550&#x27;,  30,  1000, 0.501),
+  (&#x27;BGNCC-2026-0002&#x27;,1,&#x27;CAROT&#x27;,    10,  2950, 0.238),
+  (&#x27;BGNCC-2026-0003&#x27;,1,&#x27;CAROT&#x27;,    10,  2950, 0.26438),
+  (&#x27;BGNCC-2026-0004&#x27;,1,&#x27;S17-BEST&#x27;, 9.5, 1400, 2.45),
+  (&#x27;BGNCC-2026-0005&#x27;,1,&#x27;S17-MED&#x27;,  9.5, 1400, 2.35),
+  (&#x27;BGNCC-2026-0006&#x27;,1,&#x27;S17-BEST&#x27;, 9.5, 1400, 2.525),
+  (&#x27;BGNCC-2026-0006&#x27;,2,&#x27;S17-MED&#x27;,  9.5, 1400, 2.425),
+  (&#x27;BGNCC-2026-0007&#x27;,1,&#x27;HANH-BELL&#x27;,10,  3000, 0.585)
+) v(no, line, prod, bag_kg, bags, price)
+JOIN supplier_quotations q ON q.quote_no = v.no
+JOIN products p ON p.code = v.prod;
+
+-- Khách hàng &amp; yêu cầu báo giá (VÍ DỤ — file Excel chưa có thông tin khách)
+INSERT INTO customers (code, name, default_port_id) SELECT &#x27;KH001&#x27;, &#x27;Khách hàng mẫu A&#x27;, id FROM ports WHERE code=&#x27;HCM&#x27;;
+
+INSERT INTO customer_requests (request_no, customer_id, request_date, quote_deadline, status, note)
+SELECT &#x27;YC-2026-0001&#x27;, id, DATE &#x27;2026-09-07&#x27;, DATE &#x27;2026-09-17&#x27;, &#x27;SOURCING&#x27;, &#x27;Ví dụ minh họa&#x27; FROM customers WHERE code=&#x27;KH001&#x27;;
+
+INSERT INTO customer_request_items (request_id, line_no, product_id, port_id, bag_weight_kg, quantity_kg)
+SELECT r.id, v.line, p.id, pt.id, v.bag_kg, v.qty
+FROM (VALUES (1,&#x27;HL-2532&#x27;,&#x27;HCM&#x27;,10,60000), (2,&#x27;S17-BEST&#x27;,&#x27;HP&#x27;,9.5,13300)) v(line, prod, port, bag_kg, qty)
+JOIN customer_requests r ON r.request_no=&#x27;YC-2026-0001&#x27;
+JOIN products p ON p.code=v.prod JOIN ports pt ON pt.code=v.port;
+
+-- Gắn báo giá NCC vào dòng yêu cầu
+-- Dòng 1 (Hành lai 25-32, HCM, bao 10kg, 60 tấn): Thiên Tân chào 2 quy cách (bao 10kg và bao 30kg)
+UPDATE supplier_quotation_items i SET request_item_id = ri.id
+FROM supplier_quotations q, customer_request_items ri, customer_requests r
+WHERE q.id = i.quotation_id AND r.id = ri.request_id AND r.request_no = &#x27;YC-2026-0001&#x27;
+  AND ((ri.line_no = 1 AND q.quote_no = &#x27;BGNCC-2026-0001&#x27; AND i.line_no IN (1,3))
+    OR (ri.line_no = 2 AND q.quote_no IN (&#x27;BGNCC-2026-0004&#x27;,&#x27;BGNCC-2026-0006&#x27;) AND i.product_id = ri.product_id));
+
+-- Chụp phí &amp; tính toán cho mọi dòng
+SELECT fn_snapshot_default_fees(id) FROM supplier_quotation_items ORDER BY id;
+</pre></div>
+<div class="codebox">
+<div class="bar"><span>select_example.sql — chọn NCC tối ưu &amp; xem giá gửi khách</span><button class="copy" type="button" data-target="sql-select">Sao chép</button></div>
+<pre id="sql-select">-- VÍ DỤ: chọn NCC tối ưu cho yêu cầu YC-2026-0001 rồi xem báo giá gửi khách
+
+-- B1. Mỗi dòng yêu cầu chọn NCC có is_best = TRUE (người dùng có thể chọn NCC khác)
+UPDATE customer_request_items ri SET selected_supplier_item_id = v.supplier_item_id
+FROM v_request_quote_comparison v
+WHERE v.request_item_id = ri.id AND v.is_best AND v.request_no = &#x27;YC-2026-0001&#x27;;
+
+-- B2. Đánh dấu báo giá NCC được chọn
+UPDATE supplier_quotations q SET status = &#x27;SELECTED&#x27;, updated_at = now()
+FROM supplier_quotation_items i
+JOIN customer_request_items ri ON ri.selected_supplier_item_id = i.id
+WHERE i.quotation_id = q.id;
+
+-- B3. Đã gửi báo giá cho khách
+UPDATE customer_requests SET status = &#x27;QUOTED&#x27;, updated_at = now() WHERE request_no = &#x27;YC-2026-0001&#x27;;
+
+-- B4. Nội dung gửi khách
+SELECT line_no, product_name, port_code, bag_weight_kg, quantity_kg, supplier_name,
+       price_vnd_per_ton, amount_before_vat, vat_amount, amount_after_vat
+FROM v_request_customer_quote WHERE request_no = &#x27;YC-2026-0001&#x27; ORDER BY line_no;
+</pre></div>
+</section>
+</main>
+</div>
+
+<script>
+document.querySelectorAll('button.copy').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var el = document.getElementById(btn.dataset.target);
+    var text = el.textContent;
+    var done = function () { var t = btn.textContent; btn.textContent = 'Đã sao chép'; setTimeout(function () { btn.textContent = t; }, 1500); };
+    var fallback = function () {
+      var r = document.createRange(); r.selectNodeContents(el);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = 'Đã chọn — nhấn Ctrl+C';
+    };
+    try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
+  });
+});
+</script>
+
+</body>
+</html>
+=======
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -619,3 +1789,4 @@
     </script>
 </body>
 </html>
+>>>>>>> 81941b890caaffdc3171ef88ea0aa08e2b0ce862
