@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy Trình Báo Giá Nông Sản Xuất Nhập Khẩu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto space-y-8">
+        
+        <!-- Header -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Module Báo Giá & So Sánh Chi Phí</span>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mt-2">So Sánh Báo Giá & Tự Động Gợi Ý NCC Tối Ưu</h1>
+            <p class="text-gray-600 text-sm mt-1">Tự động quy đổi Landed Cost/Tấn của các Nhà Cung Cấp để đề xuất báo giá có chi phí thấp nhất cho khách hàng.</p>
+        </div>
+
+        <!-- 1. Mermaid Process Diagram -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <span class="w-3 h-3 bg-blue-600 rounded-full"></span>
+                1. Sơ Đồ Quy Trình Nghiệp Vụ Báo Giá (BPMN Workflow)
+            </h2>
+            <div class="mermaid overflow-x-auto py-2">
+                graph TD
+                    Start([Bắt đầu: Nhu cầu nhập hàng nông sản]) --> MasterData[1. Chuẩn hóa Danh mục Cảng & Định mức Phí LCC]
+                    MasterData --> InputData[2. Nhập báo giá NCC, Quy cách & Các Phụ phí VNĐ/Tấn]
+                    InputData --> CalcEngine[3. Hệ thống tính Landed Cost/Tấn]
+                    CalcEngine --> Compare{4. So sánh Landed Cost với các NCC khác}
+                    Compare -- Chọn NCC Tối Ưu --> Export[5. Kết xuất Báo giá chuẩn & Tổng tiền thanh toán VAT]
+                    Compare -- Chi phí chưa tối ưu --> Renegotiate[Đàm phán lại với NCC / Đổi Cảng đến] --> InputData
+                    Export --> End([Kết thúc: Phê duyệt & Tạo PO])
+            </div>
+        </div>
+
+        <!-- 2. Master Data Management: Ports & LCC Fees -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <span class="w-3 h-3 bg-blue-600 rounded-full"></span>
+                    2. Quản Lý Danh Mục Cảng & Phí LCC (Master Data)
+                </h2>
+                <span class="text-xs text-gray-500">Mã Cảng chuẩn UN/LOCODE</span>
+            </div>
+
+            <!-- Form thêm Cảng mới -->
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4 flex flex-wrap gap-3 items-end">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700">Mã Cảng (UN/LOCODE)</label>
+                    <input type="text" id="newPortId" placeholder="VD: VNUIH" class="mt-1 p-2 border rounded text-sm bg-white uppercase">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700">Tên Cảng Mới</label>
+                    <input type="text" id="newPortName" placeholder="VD: Quy Nhơn..." class="mt-1 p-2 border rounded text-sm bg-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700">Phí LCC Mặc Định (VNĐ/Tấn)</label>
+                    <input type="number" id="newPortLcc" placeholder="VD: 600000" class="mt-1 p-2 border rounded text-sm bg-white">
+                </div>
+                <button onclick="addNewPort()" class="bg-green-600 hover:bg-green-700 text-white text-xs px-4 py-2.5 rounded font-medium transition">
+                    + Thêm Cảng Vào Hệ Thống
+                </button>
+            </div>
+
+            <!-- Bảng danh sách cảng hiện tại -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100 border-b text-gray-700">
+                            <th class="p-2.5">STT</th>
+                            <th class="p-2.5">Mã Cảng</th>
+                            <th class="p-2.5">Tên Cảng</th>
+                            <th class="p-2.5">Phí LCC Định Mức (VNĐ/Tấn)</th>
+                            <th class="p-2.5">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="portTableBody" class="divide-y divide-gray-200">
+                        <!-- JS Render -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 3. Interactive Calculator Component -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <span class="w-3 h-3 bg-blue-600 rounded-full"></span>
+                3. Nhập Báo Giá Hiện Tại (Calculator)
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Section 1: Thông tin đơn hàng & Đơn giá -->
+                <div class="lg:col-span-4 bg-blue-50 p-4 rounded-lg space-y-3 text-sm border border-blue-100">
+                    <h3 class="font-bold text-blue-900 border-b border-blue-200 pb-2">1. Thông Tin Hàng Hóa & Đơn Giá</h3>
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700">Nhà Cung Cấp</label>
+                            <input type="text" id="supplier" value="Thiên Tân" class="w-full mt-1 p-2 border rounded text-sm bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700">Ngày Báo Giá</label>
+                            <input type="date" id="quoteDate" value="2026-10-06" class="w-full mt-1 p-2 border rounded text-sm bg-white">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700">Tên Sản Phẩm</label>
+                            <input type="text" id="product" value="Hành lai 25-32" class="w-full mt-1 p-2 border rounded text-sm bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700">Cảng Đến</label>
+                            <select id="portSelect" onchange="onPortSelectChange()" class="w-full mt-1 p-2 border rounded text-sm bg-white font-semibold text-blue-900">
+                                <!-- JS Populated -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700">Kg / Bao</label>
+                            <input type="number" id="bagWeight" value="10" oninput="calculate()" class="w-full mt-1 p-2 border rounded text-sm bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700">Số Bao</label>
+                            <input type="number" id="bagCount" value="6000" oninput="calculate()" class="w-full mt-1 p-2 border rounded text-sm bg-white">
+                        </div>
+                    </div>
+
+                    <div class="p-2 bg-blue-100/70 rounded text-xs text-blue-900 flex justify-between font-medium">
+                        <span>Tổng Khối Lượng:</span>
+                        <span id="outCalculatedWeight" class="font-bold">60.000 Kg (60 Tấn)</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700">Đơn Giá USD/Kg</label>
+                            <input type="number" id="priceUsd" step="0.0001" value="0.3000" oninput="calculate()" class="w-full mt-1 p-2 border rounded text-sm font-semibold text-blue-800 bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700">Tỷ Giá USD/VND</label>
+                            <input type="number" id="exchangeRate" value="26170" oninput="calculate()" class="w-full mt-1 p-2 border rounded text-sm font-semibold text-blue-800 bg-white">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Khai báo Phụ Phí (Tất cả tính theo VNĐ/Tấn) -->
+                <div class="lg:col-span-4 bg-orange-50 p-4 rounded-lg space-y-3 text-sm border border-orange-100">
+                    <h3 class="font-bold text-orange-900 border-b border-orange-200 pb-2">2. Danh Mục Phụ Phí (VNĐ/Tấn)</h3>
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[11px] text-gray-700">Phí LCC <span id="lblSelectedPortName" class="text-blue-600 font-bold">(VNSGN)</span></label>
+                            <input type="number" id="feeLcc" value="500000" oninput="calculate()" class="w-full mt-0.5 p-1.5 border rounded text-sm bg-yellow-50 font-semibold text-orange-900">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-gray-700">Phí Logistics/Tấn</label>
+                            <input type="number" id="feeLogistics" value="600000" oninput="calculate()" class="w-full mt-0.5 p-1.5 border rounded text-sm bg-white">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[11px] text-gray-700">Phí Bán Hàng/Tấn</label>
+                            <input type="number" id="feeSales" value="200000" oninput="calculate()" class="w-full mt-0.5 p-1.5 border rounded text-sm bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-gray-700">Phí Ops/Tấn</label>
+                            <input type="number" id="feeOps" value="15000" oninput="calculate()" class="w-full mt-0.5 p-1.5 border rounded text-sm bg-white">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[11px] text-gray-700">Phí Ngân Hàng/Tấn</label>
+                            <input type="number" id="feeBank" value="1000" oninput="calculate()" class="w-full mt-0.5 p-1.5 border rounded text-sm bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-gray-700">Phí Chứng Từ - HQ/Tấn</label>
+                            <input type="number" id="feeDoc" value="56000" oninput="calculate()" class="w-full mt-0.5 p-1.5 border rounded text-sm bg-white">
+                        </div>
+                    </div>
+
+                    <div class="p-2.5 bg-orange-100/80 rounded text-xs text-orange-900 flex justify-between font-medium mt-4">
+                        <span>TỔNG PHỤ PHÍ:</span>
+                        <span id="outTotalSubFees" class="font-bold text-orange-800 text-sm">1.372.000 VNĐ/Tấn</span>
+                    </div>
+                </div>
+
+                <!-- Section 3: Kết quả tính toán & Nút Lưu Báo Giá -->
+                <div class="lg:col-span-4 bg-gray-900 text-white p-5 rounded-lg flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center border-b border-gray-700 pb-3 mb-4">
+                            <span class="text-xs text-gray-400">Kết Quả Báo Giá Chuẩn System</span>
+                            <span class="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded border border-green-500/30">Output</span>
+                        </div>
+
+                        <div class="space-y-2.5 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400 text-xs">Giá Vốn (VNĐ/Tấn):</span>
+                                <span id="outGiaVon" class="font-mono font-bold text-yellow-400">0 VNĐ</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400 text-xs">Tổng Phụ Phí (VNĐ/Tấn):</span>
+                                <span id="outSubFees" class="font-mono font-bold text-blue-400">0 VNĐ</span>
+                            </div>
+                            <div class="flex justify-between border-t border-gray-800 pt-2">
+                                <span class="text-gray-300 text-xs font-semibold">Thành Tiền (VNĐ/Tấn):</span>
+                                <span id="outThanhTien" class="font-mono text-base font-bold text-yellow-300">0 VNĐ</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400 text-xs">Tổng Tiền Hàng (VNĐ):</span>
+                                <span id="outTotalBeforeVat" class="font-mono font-bold text-gray-200">0 VNĐ</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400 text-xs">Thuế VAT (5%):</span>
+                                <span id="outTotalVat" class="font-mono font-bold text-orange-400">0 VNĐ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-800 pt-3 mt-3 space-y-2">
+                        <div>
+                            <span class="text-[11px] text-gray-400 block">TỔNG THANH TOÁN SAU VAT</span>
+                            <span id="outGrandTotal" class="text-lg font-bold font-mono text-green-400 block">0 VNĐ</span>
+                        </div>
+                        
+                        <button onclick="saveQuotationToComparison()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2.5 rounded transition shadow flex items-center justify-center gap-1.5">
+                            <span>+</span> Lưu Báo Giá Vào Bảng So Sánh
+                        </button>
+                        
+                        <button onclick="copyPromptFormat()" class="w-full bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] py-1.5 rounded transition border border-gray-700">
+                            Copy Cấu Trúc JSON
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 4. Quotation Comparison & Supplier Suggestion Engine -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+            <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                        <span class="w-3 h-3 bg-green-600 rounded-full"></span>
+                        4. Bảng So Sánh Báo Giá & Gợi Ý Chọn NCC Tối Ưu
+                    </h2>
+                    <p class="text-xs text-gray-500 mt-0.5">Tự động phân tích giá tốt nhất dựa trên **Landed Cost/Tấn** sau khi tính đủ chi phí.</p>
+                </div>
+                
+                <div id="supplierRecommendationBadge" class="hidden bg-green-100 border border-green-300 text-green-800 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5">
+                    <span>🏆 Gợi ý chọn:</span>
+                    <span id="recommendedSupplierText" class="text-green-900 underline">--</span>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100 border-b text-gray-700 uppercase tracking-wider text-[11px]">
+                            <th class="p-2.5">Nhà Cung Cấp</th>
+                            <th class="p-2.5">Cảng Đến</th>
+                            <th class="p-2.5">Giá USD/Kg</th>
+                            <th class="p-2.5">Giá Vốn (VNĐ/Tấn)</th>
+                            <th class="p-2.5">Phụ Phí (VNĐ/Tấn)</th>
+                            <th class="p-2.5 font-bold text-blue-900">Thành Tiền (VNĐ/Tấn)</th>
+                            <th class="p-2.5">Tổng Sau VAT (VNĐ)</th>
+                            <th class="p-2.5">Chênh Lệch</th>
+                            <th class="p-2.5">Trạng Thái Gợi Ý</th>
+                            <th class="p-2.5 text-center">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparisonTableBody" class="divide-y divide-gray-200">
+                        <!-- JS Dynamic Render -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let portsList = [
+            { id: 'VNSGN', name: 'HCM (Cát Lái)', lccFee: 500000 },
+            { id: 'VNHPH', name: 'Hải Phòng', lccFee: 700000 }
+        ];
+
+        let quotationList = [
+            {
+                id: 'QUOTE_1',
+                supplier: 'Thiên Tân',
+                quoteDate: '2026-10-06',
+                product: 'Hành lai 25-32',
+                portId: 'VNSGN',
+                portName: 'HCM (Cát Lái)',
+                bagWeight: 10,
+                bagCount: 6000,
+                priceUsd: 0.3000,
+                exchangeRate: 26170,
+                feeLcc: 500000,
+                feeLogistics: 600000,
+                feeSales: 200000,
+                feeOps: 15000,
+                feeBank: 1000,
+                feeDoc: 56000,
+                giaVon: 7851000,
+                subFees: 1372000,
+                thanhTienPerTon: 9223000,
+                totalBeforeVat: 553380000,
+                vat: 27669000,
+                grandTotal: 581049000
+            },
+            {
+                id: 'QUOTE_2',
+                supplier: 'Nam Kinh',
+                quoteDate: '2026-10-06',
+                product: 'Hành lai 25-32',
+                portId: 'VNHPH',
+                portName: 'Hải Phòng',
+                bagWeight: 10,
+                bagCount: 6000,
+                priceUsd: 0.3000,
+                exchangeRate: 26170,
+                feeLcc: 700000,
+                feeLogistics: 600000,
+                feeSales: 200000,
+                feeOps: 15000,
+                feeBank: 1000,
+                feeDoc: 56000,
+                giaVon: 7851000,
+                subFees: 1572000,
+                thanhTienPerTon: 9423000,
+                totalBeforeVat: 565380000,
+                vat: 28269000,
+                grandTotal: 593649000
+            }
+        ];
+
+        function initApp() {
+            renderPortTable();
+            renderPortDropdown();
+            onPortSelectChange();
+            renderComparisonTable();
+        }
+
+        function fmtVND(num) {
+            return new Intl.NumberFormat('vi-VN').format(Math.round(num)) + ' VNĐ';
+        }
+
+        function renderPortTable() {
+            const tbody = document.getElementById('portTableBody');
+            tbody.innerHTML = '';
+            portsList.forEach((p, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-2.5">${index + 1}</td>
+                        <td class="p-2.5 font-bold text-blue-700">${p.id}</td>
+                        <td class="p-2.5 font-semibold text-gray-900">${p.name}</td>
+                        <td class="p-2.5">
+                            <input type="number" value="${p.lccFee}" onchange="updatePortFee('${p.id}', this.value)" class="p-1 border rounded w-32 text-xs bg-white"> VNĐ
+                        </td>
+                        <td class="p-2.5">
+                            <button onclick="deletePort('${p.id}')" class="text-red-600 hover:text-red-800 font-medium">Xóa</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderPortDropdown() {
+            const select = document.getElementById('portSelect');
+            const currentSelected = select.value;
+            select.innerHTML = '';
+            portsList.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.innerText = `${p.name} (${p.id})`;
+                select.appendChild(opt);
+            });
+            if (currentSelected && portsList.some(p => p.id === currentSelected)) {
+                select.value = currentSelected;
+            }
+        }
+
+        function addNewPort() {
+            const id = document.getElementById('newPortId').value.trim().toUpperCase();
+            const name = document.getElementById('newPortName').value.trim();
+            const lcc = parseFloat(document.getElementById('newPortLcc').value);
+
+            if (!id || !name || isNaN(lcc)) {
+                alert('Vui lòng nhập đầy đủ Mã cảng, Tên cảng và Phí LCC!');
+                return;
+            }
+
+            if (portsList.some(p => p.id === id)) {
+                alert('Mã cảng này đã tồn tại!');
+                return;
+            }
+
+            portsList.push({ id, name, lccFee: lcc });
+            document.getElementById('newPortId').value = '';
+            document.getElementById('newPortName').value = '';
+            document.getElementById('newPortLcc').value = '';
+
+            renderPortTable();
+            renderPortDropdown();
+            selectPort(id);
+        }
+
+        function updatePortFee(id, newFee) {
+            const port = portsList.find(p => p.id === id);
+            if (port) {
+                port.lccFee = parseFloat(newFee) || 0;
+                renderPortDropdown();
+                if (document.getElementById('portSelect').value === id) {
+                    onPortSelectChange();
+                }
+            }
+        }
+
+        function deletePort(id) {
+            if (portsList.length <= 1) {
+                alert('Phải giữ lại ít nhất 1 cảng!');
+                return;
+            }
+            portsList = portsList.filter(p => p.id !== id);
+            renderPortTable();
+            renderPortDropdown();
+            onPortSelectChange();
+        }
+
+        function selectPort(id) {
+            document.getElementById('portSelect').value = id;
+            onPortSelectChange();
+        }
+
+        function onPortSelectChange() {
+            const selectedId = document.getElementById('portSelect').value;
+            const port = portsList.find(p => p.id === selectedId);
+            if (port) {
+                document.getElementById('lblSelectedPortName').innerText = `(${port.id})`;
+                document.getElementById('feeLcc').value = port.lccFee;
+                calculate();
+            }
+        }
+
+        function calculateCurrentState() {
+            const bagWeight = parseFloat(document.getElementById('bagWeight').value) || 0;
+            const bagCount = parseFloat(document.getElementById('bagCount').value) || 0;
+            const priceUsd = parseFloat(document.getElementById('priceUsd').value) || 0;
+            const rate = parseFloat(document.getElementById('exchangeRate').value) || 0;
+
+            const feeLcc = parseFloat(document.getElementById('feeLcc').value) || 0;
+            const feeLogistics = parseFloat(document.getElementById('feeLogistics').value) || 0;
+            const feeSales = parseFloat(document.getElementById('feeSales').value) || 0;
+            const feeOps = parseFloat(document.getElementById('feeOps').value) || 0;
+            const feeBank = parseFloat(document.getElementById('feeBank').value) || 0;
+            const feeDoc = parseFloat(document.getElementById('feeDoc').value) || 0;
+
+            const totalKg = bagWeight * bagCount;
+            const totalTons = totalKg / 1000;
+
+            const giaVon = priceUsd * rate * 1000;
+            
+            // Tổng Phụ Phí (VNĐ/Tấn) = Cộng trực tiếp toàn bộ các khoản phí trên Tấn
+            const subFees = feeLcc + feeLogistics + feeSales + feeOps + feeBank + feeDoc;
+            const thanhTienPerTon = giaVon + subFees;
+
+            const totalBeforeVat = thanhTienPerTon * totalTons;
+            const vat = totalBeforeVat * 0.05;
+            const grandTotal = totalBeforeVat + vat;
+
+            const portId = document.getElementById('portSelect').value;
+            const portObj = portsList.find(p => p.id === portId);
+
+            return {
+                supplier: document.getElementById('supplier').value.trim() || 'Chưa tên',
+                quoteDate: document.getElementById('quoteDate').value,
+                product: document.getElementById('product').value,
+                portId: portId,
+                portName: portObj ? portObj.name : '',
+                bagWeight, bagCount, totalKg, totalTons,
+                priceUsd, exchangeRate: rate,
+                feeLcc, feeLogistics, feeSales, feeOps, feeBank, feeDoc,
+                giaVon, subFees, thanhTienPerTon,
+                totalBeforeVat, vat, grandTotal
+            };
+        }
+
+        function calculate() {
+            const data = calculateCurrentState();
+
+            document.getElementById('outCalculatedWeight').innerText = `${new Intl.NumberFormat('vi-VN').format(data.totalKg)} Kg (${new Intl.NumberFormat('vi-VN').format(data.totalTons)} Tấn)`;
+            document.getElementById('outTotalSubFees').innerText = fmtVND(data.subFees) + '/Tấn';
+            document.getElementById('outGiaVon').innerText = fmtVND(data.giaVon);
+            document.getElementById('outSubFees').innerText = fmtVND(data.subFees);
+            document.getElementById('outThanhTien').innerText = fmtVND(data.thanhTienPerTon);
+            document.getElementById('outTotalBeforeVat').innerText = fmtVND(data.totalBeforeVat);
+            document.getElementById('outTotalVat').innerText = fmtVND(data.vat);
+            document.getElementById('outGrandTotal').innerText = fmtVND(data.grandTotal);
+        }
+
+        function saveQuotationToComparison() {
+            const currentQuote = calculateCurrentState();
+            const existingIdx = quotationList.findIndex(q => q.supplier.toLowerCase() === currentQuote.supplier.toLowerCase());
+            
+            if (existingIdx >= 0) {
+                quotationList[existingIdx] = { ...currentQuote, id: quotationList[existingIdx].id };
+            } else {
+                quotationList.push({ ...currentQuote, id: 'QUOTE_' + Date.now() });
+            }
+
+            renderComparisonTable();
+            alert(`Đã lưu báo giá của [${currentQuote.supplier}] vào Bảng so sánh!`);
+        }
+
+        function deleteQuotation(id) {
+            quotationList = quotationList.filter(q => q.id !== id);
+            renderComparisonTable();
+        }
+
+        function loadQuotationToForm(id) {
+            const q = quotationList.find(item => item.id === id);
+            if (!q) return;
+
+            document.getElementById('supplier').value = q.supplier;
+            document.getElementById('quoteDate').value = q.quoteDate;
+            document.getElementById('product').value = q.product;
+            document.getElementById('bagWeight').value = q.bagWeight;
+            document.getElementById('bagCount').value = q.bagCount;
+            document.getElementById('priceUsd').value = q.priceUsd;
+            document.getElementById('exchangeRate').value = q.exchangeRate;
+
+            document.getElementById('feeLogistics').value = q.feeLogistics;
+            document.getElementById('feeSales').value = q.feeSales;
+            document.getElementById('feeOps').value = q.feeOps;
+            document.getElementById('feeBank').value = q.feeBank;
+            document.getElementById('feeDoc').value = q.feeDoc;
+
+            if (portsList.some(p => p.id === q.portId)) {
+                document.getElementById('portSelect').value = q.portId;
+            }
+            
+            onPortSelectChange();
+            window.scrollTo({ top: document.getElementById('supplier').offsetTop - 100, behavior: 'smooth' });
+        }
+
+        function renderComparisonTable() {
+            const tbody = document.getElementById('comparisonTableBody');
+            tbody.innerHTML = '';
+
+            if (quotationList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" class="p-4 text-center text-gray-400">Chưa có báo giá nào được lưu. Hãy nhập thông tin và nhấn nút "+ Lưu Báo Giá".</td></tr>`;
+                document.getElementById('supplierRecommendationBadge').classList.add('hidden');
+                return;
+            }
+
+            let minLandedCost = Math.min(...quotationList.map(q => q.thanhTienPerTon));
+            let bestSupplier = quotationList.find(q => q.thanhTienPerTon === minLandedCost);
+
+            if (bestSupplier) {
+                const badge = document.getElementById('supplierRecommendationBadge');
+                document.getElementById('recommendedSupplierText').innerText = `${bestSupplier.supplier} (${fmtVND(bestSupplier.thanhTienPerTon)}/Tấn)`;
+                badge.classList.remove('hidden');
+            }
+
+            quotationList.forEach(q => {
+                const isBest = q.thanhTienPerTon === minLandedCost;
+                const diffPercent = ((q.thanhTienPerTon - minLandedCost) / minLandedCost) * 100;
+                
+                const trClass = isBest ? 'bg-green-50/80 border-l-4 border-l-green-600 font-medium' : 'hover:bg-gray-50';
+
+                tbody.innerHTML += `
+                    <tr class="${trClass}">
+                        <td class="p-2.5 font-bold text-gray-900">${q.supplier}</td>
+                        <td class="p-2.5"><span class="bg-gray-200 px-1.5 py-0.5 rounded text-[10px] font-mono">${q.portId}</span> ${q.portName}</td>
+                        <td class="p-2.5 font-mono">${q.priceUsd}</td>
+                        <td class="p-2.5 font-mono">${fmtVND(q.giaVon)}</td>
+                        <td class="p-2.5 font-mono text-orange-700">${fmtVND(q.subFees)}</td>
+                        <td class="p-2.5 font-mono font-bold ${isBest ? 'text-green-700 text-sm' : 'text-blue-900'}">${fmtVND(q.thanhTienPerTon)}</td>
+                        <td class="p-2.5 font-mono">${fmtVND(q.grandTotal)}</td>
+                        <td class="p-2.5 font-mono text-xs">
+                            ${isBest ? '<span class="text-green-600 font-bold">Thấp nhất</span>' : `<span class="text-red-500">+${diffPercent.toFixed(1)}%</span>`}
+                        </td>
+                        <td class="p-2.5">
+                            ${isBest 
+                                ? '<span class="bg-green-600 text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase">👑 Tối Ưu Nhất</span>' 
+                                : '<span class="text-gray-400 text-[11px]">Tham khảo</span>'}
+                        </td>
+                        <td class="p-2.5 text-center space-x-2">
+                            <button onclick="loadQuotationToForm('${q.id}')" class="text-blue-600 hover:text-blue-800 font-semibold text-[11px]">Xem/Sửa</button>
+                            <button onclick="deleteQuotation('${q.id}')" class="text-red-500 hover:text-red-700 font-semibold text-[11px]">Xóa</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function copyPromptFormat() {
+            const data = {
+                module: "QUOTATION_LANDED_COST_COMPARISON",
+                active_calculation: calculateCurrentState(),
+                saved_comparison_list: quotationList
+            };
+            navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+            alert("Đã copy toàn bộ cấu trúc dữ liệu JSON vào Clipboard!");
+        }
+
+        initApp();
+    </script>
+</body>
+</html>
